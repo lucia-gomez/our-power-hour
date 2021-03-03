@@ -54,6 +54,7 @@ const ChooseSound = (props) => {
     { label: "Drank", filename: "drank.mp3" },
     { label: "Airhorn", filename: "airhorn.mp3" },
     { label: "Windows", filename: "windows.mp3" },
+    { label: "Circle", filename: "circle.mp3" }
   ];
   sounds = sounds.sort((a, b) => a.label.localeCompare(b.label));
 
