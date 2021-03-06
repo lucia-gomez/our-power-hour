@@ -13,6 +13,7 @@ import Playlist from './pages/Playlist';
 function App() {
   const theme = {
     colors: {
+      accent: "rgb(6 40 50 / 90%)",
       bg: "#011d25",
       error: '#38464a',
       gradient: "-webkit-linear-gradient(left, #25E7B8, #92E93B)",

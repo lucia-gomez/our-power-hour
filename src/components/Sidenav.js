@@ -4,6 +4,8 @@ import ButtonIcon, { ButtonIconStyle } from '../components/ButtonIcon';
 import { Link } from '@reach/router';
 import Header from '../styles/Header';
 import Slider from '../components/Slider';
+import ButtonLink from '../components/ButtonLink';
+
 
 const SidenavBar = styled.div`
   height: 100%; 
@@ -12,7 +14,7 @@ const SidenavBar = styled.div`
   z-index: 1;
   top: 0; 
   left: 0;
-  background-color: #111; 
+  background-color: ${props => props.theme.colors.accent}; 
   color: ${props => props.theme.colors.text};
   overflow-x: hidden; 
   padding-top: 60px; 
@@ -42,8 +44,13 @@ const Sidenav = (props) => {
   return (
     <>
       <SidenavBar id="mySidenav" >
-        <Header>Our Power Hour</Header>
-        <Link to="/"><ButtonIcon icon="home" /></Link>
+        <h3>Our Power Hour</h3>
+        <ButtonLink
+          to="/"
+          text="Home"
+          enabled={"true"}
+          secondary={"true"}
+        />
         <br />
         <Slider {...props} name="Random shots" min={0} max={3} value={0} />
       </SidenavBar>

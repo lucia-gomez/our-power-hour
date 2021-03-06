@@ -24,6 +24,7 @@ const DrinkPage = styled(Page)`
 `;
 
 const Nav = styled.div`
+  background-color: ${props => props.theme.colors.accent}; 
   display: flex;
   justify-content: center;
 `;
@@ -124,7 +125,7 @@ class Playlist extends Component {
         >
           <Nav>
             <Sidenav setRandomShots={this.setRandomShots} />
-            {isDone ? null : <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>}
+            <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>
           </Nav>
           {isDone ? this.endScreen() : this.videoPlayer()}
           {isDone ? null : this.videoControls()}
