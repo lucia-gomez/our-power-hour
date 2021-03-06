@@ -94,6 +94,7 @@ class Playlist extends Component {
     this.mute = this.mute.bind(this);
     this.onReady = this.onReady.bind(this);
     this.setRandomShots = this.setRandomShots.bind(this);
+    this.setTrackNumber = this.setTrackNumber.bind(this);
 
     this.timer = new Timer(this.nextTrack, 60000);
     var mp3 = require('../sounds/' + this.props.sound);
@@ -124,7 +125,10 @@ class Playlist extends Component {
           path={this.props.path}
         >
           <Nav>
-            <Sidenav setRandomShots={this.setRandomShots} />
+            <Sidenav
+              shotsSlider={this.setRandomShots}
+              numberSlider={this.setTrackNumber}
+            />
             <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>
           </Nav>
           {isDone ? this.endScreen() : this.videoPlayer()}
@@ -291,6 +295,10 @@ class Playlist extends Component {
       times.push(Math.floor(Math.random() * 59 + 1));
     }
     this.setState({ randomShotTimes: times });
+  }
+
+  setTrackNumber(n) {
+    this.setState({ count: n });
   }
 }
 

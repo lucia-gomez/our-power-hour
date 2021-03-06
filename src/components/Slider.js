@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 const SliderContainer = styled.div`
-  margin: auto;
+  margin: 20px auto;
   width: 90%;
 `;
 
@@ -42,7 +42,7 @@ const Slider = (props) => {
           value={value}
           onInput={e => {
             setValue(e.target.value);
-            props.setRandomShots(e.target.value);
+            props.onChange(e.target.value);
           }
           }
         />
