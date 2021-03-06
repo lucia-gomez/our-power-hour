@@ -86,7 +86,7 @@ class Playlist extends Component {
     this.nextTrack = this.nextTrack.bind(this);
     this.replay = this.replay.bind(this);
     this.forward30 = this.forward30.bind(this);
-    this.back30 = this.back30.bind(this);
+    this.back10 = this.back10.bind(this);
     this.skipSong = this.skipSong.bind(this);
     this.previousSong = this.previousSong.bind(this);
     this.shuffle = this.shuffle.bind(this);
@@ -151,6 +151,7 @@ class Playlist extends Component {
             config={{
               youtube: {
                 playerVars: {
+                  color: "white",
                   listType: "playlist",
                   list: this.props.playlistID,
                   loop: 1,
@@ -171,7 +172,7 @@ class Playlist extends Component {
     const buttons = [
       { icon: "volume_off", fn: this.mute, active: this.state.muted },
       { icon: "skip_previous", fn: this.previousSong, active: true },
-      { icon: "replay_30", fn: this.back30, active: true },
+      { icon: "replay_10", fn: this.back10, active: true },
       {
         icon: this.state.paused ? "play_circle" : "pause_circle",
         fn: this.state.paused ? this.handlePlayerPlay : this.handlePlayerPause,
@@ -252,9 +253,9 @@ class Playlist extends Component {
       this.player.seekTo(this.player.getCurrentTime() + 30);
   }
 
-  back30() {
+  back10() {
     if (this.state.ready)
-      this.player.seekTo(this.player.getCurrentTime() - 30);
+      this.player.seekTo(this.player.getCurrentTime() - 10);
   }
 
   skipSong() {
