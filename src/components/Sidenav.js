@@ -51,7 +51,7 @@ const Sidenav = (props) => {
         />
         <br />
         <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
-        <Slider {...props} name="Skip to..." min={0} max={60} value={0} onChange={props.numberSlider} />
+        <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
       </SidenavBar>
       <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons">menu</SidenavButton>
     </>

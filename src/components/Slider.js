@@ -42,7 +42,7 @@ const Slider = (props) => {
           value={value}
           onInput={e => {
             setValue(e.target.value);
-            props.onChange(e.target.value);
+            props.onChange(Number(e.target.value));
           }
           }
         />
