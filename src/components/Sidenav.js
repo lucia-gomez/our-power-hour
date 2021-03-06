@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import ButtonIcon, { ButtonIconStyle } from '../components/ButtonIcon';
-import { Link } from '@reach/router';
-import Header from '../styles/Header';
+import { ButtonIconStyle } from '../components/ButtonIcon';
 import Slider from '../components/Slider';
 import ButtonLink from '../components/ButtonLink';
 
