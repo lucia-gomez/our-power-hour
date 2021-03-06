@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const VideoContainer = styled.div`
   height: ${props => props.height};
-  margin: 20px;
+  margin: 20px auto;
   position: relative;
   width: 90%;
   background: ${props => props.theme.colors.gradient};

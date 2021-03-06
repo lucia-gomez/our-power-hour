@@ -1,24 +1,40 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 import Page from '../styles/Page';
+import Header from '../styles/Header';
 import VideoContainer from '../styles/Video';
 import ReactPlayer from 'react-player/youtube';
+import Sidenav from '../components/Sidenav';
+
 import Timer from '../components/Timer';
 import UIfx from 'uifx';
+import ShotsSound from '../sounds/shots.mp3';
+
 import ButtonIcon from '../components/ButtonIcon';
 import ButtonPrimary from '../styles/ButtonPrimary';
 import ButtonLink from '../components/ButtonLink';
-import Sidenav from '../components/Sidenav';
-import ShotsSound from '../sounds/shots.mp3';
 
 const DrinkPage = styled(Page)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: 75px 6fr 1fr;
   background-image: url(${props => props.bgImage}); 
   background-blend-mode: color-dodge;
   background-size: cover;
+  padding: 0px;
+`;
+
+const Nav = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const PlaylistName = styled(Header)`
+  margin: 0px;
+
+  @media only screen and (max-width: 576px) {
+    font-size: 30px;
+    padding-top: 10px;
+  }
 `;
 
 const OverlayText = styled.h3`
@@ -37,8 +53,18 @@ const OverlayText = styled.h3`
 const ButtonRow = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  margin: auto;
 `;
+
+const EndScreen = styled.div`
+  margin: auto;
+  opacity: 0.8;
+  @media only screen and (max-width: 576px) {
+    h1 {
+      font-size: 35px;
+    }
+  }
+`
 
 class Playlist extends Component {
 
@@ -92,21 +118,25 @@ class Playlist extends Component {
     const bgImage = isDone ? '/confetti.gif' : null;
     return (
       <>
-        <Sidenav setRandomShots={this.setRandomShots} />
         <DrinkPage
           bgImage={process.env.PUBLIC_URL + bgImage}
           path={this.props.path}
         >
-          {isDone ? this.endScreen() : this.videoControls()}
+          <Nav>
+            <Sidenav setRandomShots={this.setRandomShots} />
+            {isDone ? null : <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>}
+          </Nav>
+          {isDone ? this.endScreen() : this.videoPlayer()}
+          {isDone ? null : this.videoControls()}
         </DrinkPage >
       </>
     );
   }
 
-  videoControls() {
+  videoPlayer() {
     return (
       <>
-        <VideoContainer height="80%">
+        <VideoContainer>
           <ReactPlayer
             url={`https://www.youtube.com/playlist?list=${this.props.playlistID}`}
             onError={this.skipSong}
@@ -133,12 +163,11 @@ class Playlist extends Component {
           />
           <OverlayText>{this.state.count}</OverlayText>
         </VideoContainer>
-        {this.state.ready ? this.getControls() : null}
       </>
     );
   }
 
-  getControls() {
+  videoControls() {
     const buttons = [
       { icon: "volume_off", fn: this.mute, active: this.state.muted },
       { icon: "skip_previous", fn: this.previousSong, active: true },
@@ -152,7 +181,7 @@ class Playlist extends Component {
       { icon: "skip_next", fn: this.skipSong, active: true },
       { icon: "shuffle", fn: this.shuffle, active: this.state.shuffled },
     ];
-    return (
+    const controls = (
       <ButtonRow>
         {buttons.map((b, i) => {
           const p = Math.abs(i - Math.floor(buttons.length / 2));
@@ -160,11 +189,12 @@ class Playlist extends Component {
         })}
       </ButtonRow>
     );
+    return this.state.ready ? controls : null;
   }
 
   endScreen() {
     return (
-      <div style={{ opacity: 0.8 }}>
+      <EndScreen>
         <h1>🎉 You survived! 🎉</h1>
         <div>
           <ButtonPrimary onClick={this.replay}>Play Again</ButtonPrimary>
@@ -175,7 +205,7 @@ class Playlist extends Component {
             secondary={"true"}
           />
         </div>
-      </div>
+      </EndScreen>
     );
   }
 
