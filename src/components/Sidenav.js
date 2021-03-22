@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ButtonIconStyle } from '../components/ButtonIcon';
 import Slider from '../components/Slider';
 import ButtonLink from '../components/ButtonLink';
@@ -44,6 +44,10 @@ const Sidenav = (props) => {
     document.getElementById("player-content").style.marginLeft = "0px";
     toggleOpen(!isOpen);
   }
+
+  useEffect(() => {
+    openNav()
+  }, [])
 
   return (
     <>
