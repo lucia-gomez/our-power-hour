@@ -47,6 +47,7 @@ const Sidenav = (props) => {
 
   useEffect(() => {
     openNav()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
