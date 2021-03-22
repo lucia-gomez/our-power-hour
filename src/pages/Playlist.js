@@ -16,20 +16,25 @@ import ButtonLink from '../components/ButtonLink';
 
 const DrinkPage = styled(Page)`
   display: grid;
-  grid-template-rows: 75px 6fr 1fr;
+  grid-template-rows: 8vh 1fr;
   background-image: url(${props => props.bgImage}); 
   background-blend-mode: color-dodge;
   background-size: cover;
   padding: 0px;
+  transition: margin-left .5s;
+
+  @media only screen and (max-width: 768px) {
+    margin-left: 0px!important;
+  }
 `;
 
 const Nav = styled.div`
-  background-color: ${props => props.theme.colors.accent}; 
   display: flex;
   justify-content: center;
 `;
 
 const PlaylistName = styled(Header)`
+  font-size: 5vh;
   margin: 0px;
 
   @media only screen and (max-width: 576px) {
@@ -52,8 +57,10 @@ const OverlayText = styled.h3`
 `;
 
 const ButtonRow = styled.div`
+  align-items: ${props => props.alignItems};
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin: auto;
 `;
 
@@ -123,16 +130,18 @@ class Playlist extends Component {
         <DrinkPage
           bgImage={process.env.PUBLIC_URL + bgImage}
           path={this.props.path}
+          id="player-content"
         >
           <Nav>
             <Sidenav
               shotsSlider={this.setRandomShots}
               numberSlider={this.setTrackNumber}
-            />
+            >
+              {isDone ? null : this.videoControls()}
+            </Sidenav>
             <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>
           </Nav>
           {isDone ? this.endScreen() : this.videoPlayer()}
-          {isDone ? null : this.videoControls()}
         </DrinkPage >
       </>
     );
@@ -174,26 +183,37 @@ class Playlist extends Component {
   }
 
   videoControls() {
-    const buttons = [
-      { icon: "volume_off", fn: this.mute, active: this.state.muted },
+    const primaryButtons = [
       { icon: "skip_previous", fn: this.previousSong, active: true },
-      { icon: "replay_10", fn: this.back10, active: true },
       {
         icon: this.state.paused ? "play_circle" : "pause_circle",
         fn: this.state.paused ? this.handlePlayerPlay : this.handlePlayerPause,
         active: true,
       },
-      { icon: "forward_30", fn: this.forward30, active: true },
       { icon: "skip_next", fn: this.skipSong, active: true },
+    ];
+    const secondaryButtons = [
+      { icon: "volume_off", fn: this.mute, active: this.state.muted },
+      { icon: "replay_10", fn: this.back10, active: true },
+      { icon: "forward_30", fn: this.forward30, active: true },
       { icon: "shuffle", fn: this.shuffle, active: this.state.shuffled },
     ];
+
     const controls = (
-      <ButtonRow>
-        {buttons.map((b, i) => {
-          const p = Math.abs(i - Math.floor(buttons.length / 2));
-          return <ButtonIcon icon={b.icon} onClick={b.fn} active={b.active} size={90 - p * 15} key={i} />;
-        })}
-      </ButtonRow>
+      <div>
+        <ButtonRow alignItems="center">
+          {primaryButtons.map((b, i) => {
+            const p = Math.abs(i - Math.floor(primaryButtons.length / 2));
+            return <ButtonIcon icon={b.icon} onClick={b.fn} active={b.active} size={90 - p * 30} key={i} />;
+          })}
+        </ButtonRow>
+        <ButtonRow>
+          {secondaryButtons.map((b, i) => {
+            const p = Math.floor(Math.abs(i - 1.5));
+            return <ButtonIcon icon={b.icon} onClick={b.fn} active={b.active} size={60 - p * 20} key={i} />;
+          })}
+        </ButtonRow>
+      </div>
     );
     return this.state.ready ? controls : null;
   }

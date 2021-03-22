@@ -4,7 +4,6 @@ import { ButtonIconStyle } from '../components/ButtonIcon';
 import Slider from '../components/Slider';
 import ButtonLink from '../components/ButtonLink';
 
-
 const SidenavBar = styled.div`
   height: 100%; 
   width: 0; 
@@ -24,30 +23,32 @@ const SidenavContent = styled.div`
 `;
 
 const SidenavButton = styled(ButtonIconStyle)`
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 10px;
   z-index: 10;
+  font-size: 5vh;
 `;
 
 const Sidenav = (props) => {
   const [isOpen, toggleOpen] = useState(false);
 
   const openNav = () => {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("sidenav").style.width = "250px";
+    document.getElementById("player-content").style.marginLeft = "250px";
     toggleOpen(!isOpen);
   }
 
   const closeNav = () => {
-    document.getElementById("mySidenav").style.width = "0px";
+    document.getElementById("sidenav").style.width = "0px";
+    document.getElementById("player-content").style.marginLeft = "0px";
     toggleOpen(!isOpen);
   }
 
   return (
     <>
-      <SidenavBar id="mySidenav" >
+      <SidenavBar id="sidenav" >
         <SidenavContent>
-          <h3>Our Power Hour</h3>
           <ButtonLink
             to="/"
             text="Home"
@@ -55,11 +56,15 @@ const Sidenav = (props) => {
             secondary={"true"}
           />
           <br />
+          {props.children}
+          <br />
           <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
           <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
         </SidenavContent>
       </SidenavBar>
-      <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons">menu</SidenavButton>
+      <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons">
+        {isOpen ? "close" : "menu"}
+      </SidenavButton>
     </>
   );
 };
