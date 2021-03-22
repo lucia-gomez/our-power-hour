@@ -19,6 +19,10 @@ const SidenavBar = styled.div`
   transition: 0.5s;
 `;
 
+const SidenavContent = styled.div`
+  width: 250px;
+`;
+
 const SidenavButton = styled(ButtonIconStyle)`
   position: absolute;
   top: 10px;
@@ -42,16 +46,18 @@ const Sidenav = (props) => {
   return (
     <>
       <SidenavBar id="mySidenav" >
-        <h3>Our Power Hour</h3>
-        <ButtonLink
-          to="/"
-          text="Home"
-          enabled={"true"}
-          secondary={"true"}
-        />
-        <br />
-        <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
-        <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
+        <SidenavContent>
+          <h3>Our Power Hour</h3>
+          <ButtonLink
+            to="/"
+            text="Home"
+            enabled={"true"}
+            secondary={"true"}
+          />
+          <br />
+          <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
+          <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
+        </SidenavContent>
       </SidenavBar>
       <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons">menu</SidenavButton>
     </>
