@@ -19,3 +19,10 @@ button:focus, input:focus {
 iframe {
   border-radius: 10px;
 }
+
+.gradient {
+  background-image: -webkit-linear-gradient(0deg, #25E7B8, #e93b8c);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
