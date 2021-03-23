@@ -31,18 +31,16 @@ const SidenavButton = styled(ButtonIconStyle)`
 `;
 
 const Sidenav = (props) => {
-  const [isOpen, toggleOpen] = useState(false);
+  const [isOpen, toggleOpen] = useState(true);
 
   const openNav = () => {
     document.getElementById("sidenav").style.width = "250px";
     document.getElementById("player-content").style.marginLeft = "250px";
-    toggleOpen(!isOpen);
   }
 
   const closeNav = () => {
     document.getElementById("sidenav").style.width = "0px";
     document.getElementById("player-content").style.marginLeft = "0px";
-    toggleOpen(!isOpen);
   }
 
   useEffect(() => {
