@@ -8,6 +8,7 @@ const ButtonIconStyle = styled(Header)`
   font-size: ${props => props.size}px;
   margin: 0px;
   opacity: ${props => props.active ? 1 : 0.4};
+  transition: opacity 0.2s;
 `;
 
 const ButtonIcon = (props) => {
