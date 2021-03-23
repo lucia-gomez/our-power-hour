@@ -5,12 +5,13 @@ import Header from '../styles/Header';
 import VideoContainer from '../styles/Video';
 import ReactPlayer from 'react-player/youtube';
 import Sidenav from '../components/Sidenav';
+import { Link } from '@reach/router';
 
 import Timer from '../components/Timer';
 import UIfx from 'uifx';
 import ShotsSound from '../sounds/shots.mp3';
 
-import ButtonIcon from '../components/ButtonIcon';
+import ButtonIcon, { ButtonIconStyle } from '../components/ButtonIcon';
 import ButtonPrimary from '../styles/ButtonPrimary';
 import ButtonLink from '../components/ButtonLink';
 
@@ -31,6 +32,7 @@ const DrinkPage = styled(Page)`
 const Nav = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: auto;
 `;
 
 const PlaylistName = styled(Header)`
@@ -43,14 +45,15 @@ const PlaylistName = styled(Header)`
   }
 `;
 
-const OverlayText = styled.h3`
+const OverlayText = styled.h3.attrs(props => ({
+  className: 'gradient'
+}))`
   position: absolute;
   right: 20px;
   top: 20px;
   width: fit-content;
   text-align:center;
   margin: 0 auto;
-  background: ${props => props.theme.colors.gradient};
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
@@ -62,6 +65,13 @@ const ButtonRow = styled.div`
   flex-direction: row;
   justify-content: center;
   margin: auto;
+`;
+
+const Home = styled(ButtonIconStyle)`
+  font-size: 5vh;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 `;
 
 const EndScreen = styled.div`
@@ -122,6 +132,10 @@ class Playlist extends Component {
     );
   }
 
+  componentDidMount() {
+    require("../gradient");
+  }
+
   render() {
     const isDone = this.state.count > 60;
     const bgImage = isDone ? '/confetti.gif' : null;
@@ -140,6 +154,9 @@ class Playlist extends Component {
               {isDone ? null : this.videoControls()}
             </Sidenav>
             <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>
+            <Link to="/">
+              <Home active={"true"} className="material-icons gradient" >home</Home>
+            </Link>
           </Nav>
           {isDone ? this.endScreen() : this.videoPlayer()}
         </DrinkPage >
@@ -149,36 +166,34 @@ class Playlist extends Component {
 
   videoPlayer() {
     return (
-      <>
-        <VideoContainer>
-          <ReactPlayer
-            url={`https://www.youtube.com/playlist?list=${this.props.playlistID}`}
-            onError={this.skipSong}
-            onPlay={this.handlePlayerPlay}
-            onPause={this.handlePlayerPause}
-            onReady={this.onReady}
-            controls={true}
-            playing={!this.state.paused}
-            ref={player => {
-              this.player = player
-            }}
-            config={{
-              youtube: {
-                playerVars: {
-                  color: "white",
-                  listType: "playlist",
-                  list: this.props.playlistID,
-                  loop: 1,
-                }
+      <VideoContainer>
+        <ReactPlayer
+          url={`https://www.youtube.com/playlist?list=${this.props.playlistID}`}
+          onError={this.skipSong}
+          onPlay={this.handlePlayerPlay}
+          onPause={this.handlePlayerPause}
+          onReady={this.onReady}
+          controls={true}
+          playing={!this.state.paused}
+          ref={player => {
+            this.player = player
+          }}
+          config={{
+            youtube: {
+              playerVars: {
+                color: "white",
+                listType: "playlist",
+                list: this.props.playlistID,
+                loop: 1,
               }
-            }}
-            height="100%"
-            width="100%"
-            style={{ position: 'relative' }}
-          />
-          <OverlayText>{this.state.count}</OverlayText>
-        </VideoContainer>
-      </>
+            }
+          }}
+          height="100%"
+          width="100%"
+          style={{ position: 'relative' }}
+        />
+        <OverlayText>{this.state.count}</OverlayText>
+      </VideoContainer>
     );
   }
 

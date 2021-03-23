@@ -2,10 +2,13 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { ButtonIconStyle } from '../components/ButtonIcon';
 import Slider from '../components/Slider';
-import ButtonLink from '../components/ButtonLink';
+
+const WIDTH = 250;
 
 const SidenavBar = styled.div`
-  height: 100%; 
+  height: calc(100% - 6vh); 
+  height: -webkit-calc(100% - 6vh);
+  height: -moz-calc(100% - 6vh);
   width: 0; 
   position: fixed;
   z-index: 1;
@@ -14,12 +17,12 @@ const SidenavBar = styled.div`
   background-color: ${props => props.theme.colors.accent}; 
   color: ${props => props.theme.colors.text};
   overflow-x: hidden; 
-  padding-top: 60px; 
+  padding-top: 6vh; 
   transition: 0.5s;
 `;
 
 const SidenavContent = styled.div`
-  width: 250px;
+  width: ${WIDTH}px;
 `;
 
 const SidenavButton = styled(ButtonIconStyle)`
@@ -30,17 +33,36 @@ const SidenavButton = styled(ButtonIconStyle)`
   font-size: 5vh;
 `;
 
+const AdvancedButton = styled.button.attrs(props => ({
+  className: 'gradient'
+}))`
+  border: none;
+  cursor: pointer;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Nunito';
+  width: ${WIDTH}px;
+`;
+
+const Icon = styled.i`
+  padding-left: 5px;
+  vertical-align: middle;
+`;
+
 const Sidenav = (props) => {
   const [isOpen, toggleOpen] = useState(true);
+  const [showAdvanced, toggleShowAdvanced] = useState(false);
 
   const openNav = () => {
-    document.getElementById("sidenav").style.width = "250px";
-    document.getElementById("player-content").style.marginLeft = "250px";
+    document.getElementById("sidenav").style.width = WIDTH + "px";
+    document.getElementById("player-content").style.marginLeft = WIDTH + "px";
+    toggleOpen(true);
   }
 
   const closeNav = () => {
     document.getElementById("sidenav").style.width = "0px";
     document.getElementById("player-content").style.marginLeft = "0px";
+    toggleOpen(false);
   }
 
   useEffect(() => {
@@ -48,24 +70,32 @@ const Sidenav = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const advanced = (
+    <>
+      <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
+      <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
+    </>
+  );
+
   return (
     <>
       <SidenavBar id="sidenav" >
         <SidenavContent>
-          <ButtonLink
-            to="/"
-            text="Home"
-            enabled={"true"}
-            secondary={"true"}
-          />
           <br />
           {props.children}
           <br />
-          <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
-          <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
+          {/* {shotCounter} */}
+          <AdvancedButton onClick={() => toggleShowAdvanced(!showAdvanced)}>
+            <p >Advanced
+            <Icon className='material-icons'>
+                {showAdvanced ? "keyboard_arrow_down" : "keyboard_arrow_right"}
+              </Icon>
+            </p>
+          </AdvancedButton>
+          {showAdvanced ? advanced : null}
         </SidenavContent>
       </SidenavBar>
-      <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons">
+      <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons gradient">
         {isOpen ? "close" : "menu"}
       </SidenavButton>
     </>

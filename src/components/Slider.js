@@ -6,12 +6,13 @@ const SliderContainer = styled.div`
   width: 90%;
 `;
 
-const SliderStyle = styled.input`
+const SliderStyle = styled.input.attrs(props => ({
+  className: 'gradient'
+}))`
   -webkit-appearance: none;  
   appearance: none;
   width: 80%; 
   height: 10px; 
-  background: ${props => props.theme.colors.gradient}; 
   border-radius: 100px;
   outline: none; 
   -webkit-transition: .2s; 
