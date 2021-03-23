@@ -193,7 +193,7 @@ class Playlist extends Component {
       { icon: "skip_next", fn: this.skipSong, active: true },
     ];
     const secondaryButtons = [
-      { icon: "volume_off", fn: this.mute, active: this.state.muted },
+      { icon: this.state.muted ? "volume_off" : "volume_up", fn: this.mute, active: this.state.muted },
       { icon: "replay_10", fn: this.back10, active: true },
       { icon: "forward_30", fn: this.forward30, active: true },
       { icon: "shuffle", fn: this.shuffle, active: this.state.shuffled },
