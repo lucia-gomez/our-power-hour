@@ -6,12 +6,17 @@ const SliderContainer = styled.div`
   width: 90%;
 `;
 
+const SliderRow = styled.div`
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 35px;
+`;
+
 const SliderStyle = styled.input.attrs(props => ({
   className: 'gradient'
 }))`
   -webkit-appearance: none;  
   appearance: none;
-  width: 80%; 
   height: 10px; 
   border-radius: 100px;
   outline: none; 
@@ -36,18 +41,21 @@ const Slider = (props) => {
     <SliderContainer>
       <label>
         {props.name}
-        <SliderStyle
-          type='range'
-          min={props.min}
-          max={props.max}
-          value={value}
-          onInput={e => {
-            setValue(e.target.value);
-            props.onChange(Number(e.target.value));
-          }
-          }
-        />
-        {value}
+        <SliderRow>
+          <SliderStyle
+            type='range'
+            min={props.min}
+            max={props.max}
+            step={props.step ?? 1}
+            value={value}
+            onInput={e => {
+              setValue(e.target.value);
+              props.onChange(Number(e.target.value));
+            }
+            }
+          />
+          {props.labelFormat ? props.labelFormat(value) : value}
+        </SliderRow>
       </label>
     </SliderContainer>
   );

@@ -72,8 +72,18 @@ const Sidenav = (props) => {
 
   const advanced = (
     <>
-      <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
       <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
+      <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
+      <Slider
+        {...props}
+        name="Auto skip..."
+        min={0}
+        max={60}
+        value={0}
+        step={5}
+        labelFormat={x => x + "s"}
+        onChange={props.autoSkipSlider}
+      />
     </>
   );
 

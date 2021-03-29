@@ -89,7 +89,9 @@ class Playlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      autoSkip: 0,
       count: 1,
+      justStarted: false,
       muted: false,
       paused: true,
       pauseTimer: null,
@@ -112,6 +114,8 @@ class Playlist extends Component {
     this.onReady = this.onReady.bind(this);
     this.setRandomShots = this.setRandomShots.bind(this);
     this.setTrackNumber = this.setTrackNumber.bind(this);
+    this.setAutoSkip = this.setAutoSkip.bind(this);
+    this.autoSkip = this.autoSkip.bind(this);
 
     this.timer = new Timer(this.nextTrack, 60000);
     var mp3 = require('../sounds/' + this.props.sound);
@@ -148,6 +152,7 @@ class Playlist extends Component {
         >
           <Nav>
             <Sidenav
+              autoSkipSlider={this.setAutoSkip}
               shotsSlider={this.setRandomShots}
               numberSlider={this.setTrackNumber}
             >
@@ -180,6 +185,7 @@ class Playlist extends Component {
           }}
           config={{
             youtube: {
+              onUnstarted: this.autoSkip,
               playerVars: {
                 color: "white",
                 listType: "playlist",
@@ -258,14 +264,11 @@ class Playlist extends Component {
     this.setState(prev => ({ count: prev.count + 1, paused: false }), () => {
       const count = this.state.count;
       if (count <= 60 && this.state.ready) {
-        this.player.getInternalPlayer().pauseVideo();
+        //this.player.getInternalPlayer().pauseVideo();
         const sound = this.state.randomShotTimes.includes(count) ? this.shotsSound : this.sound;
-        sound.play();
         this.timer.repeat();
-
-        setTimeout(() => {
-          this.skipSong();
-        }, 1000)
+        this.skipSong();
+        sound.play();
       }
     });
   }
@@ -280,7 +283,13 @@ class Playlist extends Component {
   handlePlayerPlay() {
     if (this.state.paused) {
       this.timer.resume()
-      this.setState({ paused: false });
+      if (this.state.justStarted) {
+        this.setState({ paused: false });
+        this.player.seekTo(this.state.autoSkip);
+        this.setState({ justStarted: false });
+      } else {
+        this.setState({ paused: false });
+      }
     }
   }
 
@@ -306,6 +315,10 @@ class Playlist extends Component {
   previousSong() {
     if (this.state.ready)
       this.player.getInternalPlayer().previousVideo();
+  }
+
+  autoSkip() {
+    this.setState({ justStarted: true });
   }
 
   shuffle() {
@@ -334,6 +347,10 @@ class Playlist extends Component {
 
   setTrackNumber(n) {
     this.setState({ count: n });
+  }
+
+  setAutoSkip(n) {
+    this.setState({ autoSkip: n });
   }
 }
 
