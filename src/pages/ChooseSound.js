@@ -86,12 +86,14 @@ const ChooseSound = (props) => {
       <ButtonFlexible onClick={onClick} key={idx}>{label}</ButtonFlexible>
   };
 
+  const stepNum = Number(props.path.substring(1));
+
   return (
     <PageTemplate
-      title="Step 3"
+      title={"Step " + stepNum}
       caption="Choose a timer sound effect"
       path={props.path}
-      step={3}
+      step={stepNum}
     >
       <ButtonGrid>
         {getButton(-1, '???', chooseRandom)}
@@ -100,7 +102,7 @@ const ChooseSound = (props) => {
           return getButton(idx, sound.label, click);
         })}
       </ButtonGrid>
-      <ButtonLink to="/4" text="Next" enabled={active !== null ? 1 : 0} />
+      <ButtonLink to={"/" + (stepNum + 1)} text="Next" enabled={active !== null ? 1 : 0} />
     </PageTemplate >
   );
 };

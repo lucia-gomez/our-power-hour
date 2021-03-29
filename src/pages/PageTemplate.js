@@ -19,7 +19,7 @@ const StepPageContent = styled.div`
 
 const PageTemplate = (props) => {
   return (
-    <StepPage path={props.path}>
+    <StepPage>
       <div>
         <Header className='gradient'>{props.title}</Header>
         {props.caption ? <p>{props.caption}</p> : null}
