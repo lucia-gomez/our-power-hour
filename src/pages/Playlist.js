@@ -38,6 +38,9 @@ const Nav = styled.div`
 const PlaylistName = styled(Header)`
   font-size: 5vh;
   margin: 0px;
+  max-width: 70vw;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 
   @media only screen and (max-width: 576px) {
     font-size: 30px;
