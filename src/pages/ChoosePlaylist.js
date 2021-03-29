@@ -3,20 +3,24 @@ import PageTemplate from './PageTemplate';
 import ButtonLink from '../components/ButtonLink';
 import Input from '../styles/Input';
 
+import ReactPlayer from 'react-player';
+
 const ChoosePlaylist = (props) => {
   const [url, setURL] = useState("");
 
-  const getPlaylistID = () => {
-    let validID = null;
+  const checkPlaylistID = (text) => {
+    if (ReactPlayer.canPlay(text)) {
+      let i = text.indexOf("list=") + "list=".length;
+      let id = text.slice(i, text.length);
+      if (id.includes("&index")) {
+        id = id.substring(0, id.indexOf("&index"));
+      }
 
-    const i = url.indexOf("list=") + "list=".length;
-    const id = url.slice(i, url.length);
-    // if (id.length === 18) {
-    validID = id;
-    // }
-    if (validID) {
-      localStorage.setItem("powerHourPlaylistID", validID);
-      props.setPlaylistID(validID);
+      setURL(id);
+      localStorage.setItem("powerHourPlaylistID", id);
+      props.setPlaylistID(id);
+    } else {
+      setURL("");
     }
   }
 
@@ -28,11 +32,13 @@ const ChoosePlaylist = (props) => {
       caption={`Enter the URL of a YouTube playlist`}
       step={stepNum}
     >
-      <Input onChange={x => setURL(x.target.value)} />
+      <Input onChange={x => {
+        checkPlaylistID(x.target.value);
+      }
+      } />
       <ButtonLink
         to={"/" + (stepNum + 1)}
         text="Next"
-        onClick={getPlaylistID}
         enabled={url ? 1 : 0}
         errorMsg="Enter a valid playlist URL"
       />
