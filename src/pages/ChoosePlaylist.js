@@ -11,7 +11,6 @@ const ChoosePlaylist = (props) => {
   const [title, setTitle] = useState();
 
   const getPlaylistID = (text) => {
-    console.log(ReactPlayer.canPlay(text));
     if (ReactPlayer.canPlay(text)) {
       let i = text.indexOf("list=") + "list=".length;
       let id = text.slice(i, text.length);
@@ -25,7 +24,6 @@ const ChoosePlaylist = (props) => {
 
   const validatePlaylistID = (id) => {
     const onError = _ => {
-      console.log("error")
       setTitle("");
       setURL("");
     }
@@ -40,7 +38,6 @@ const ChoosePlaylist = (props) => {
         maxResults: 1,
       },
       success: data => {
-        console.log("success", data)
         if (data.items.length > 0) {
           const snippet = data.items[0].snippet;
           setTitle(snippet.title);
