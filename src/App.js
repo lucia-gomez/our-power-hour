@@ -14,6 +14,11 @@ import Playlist from './pages/Playlist';
 
 function App() {
   const [themeName, setThemeName] = useState(localStorage.getItem("powerHourTheme") ?? "blueGreen");
+  if (themes[themeName] === undefined) {
+    localStorage.setItem("powerHourTheme", "blueGreen");
+    setThemeName("blueGreen");
+  }
+
   const theme = {
     colors: themes[themeName],
     font: "'Nunito', sans-serif",
