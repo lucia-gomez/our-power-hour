@@ -139,10 +139,6 @@ class Playlist extends Component {
     );
   }
 
-  componentDidMount() {
-    require("../gradient");
-  }
-
   render() {
     const isDone = this.state.count > 60;
     const bgImage = isDone ? '/confetti.gif' : null;

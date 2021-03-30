@@ -21,7 +21,7 @@ iframe {
 }
 
 .gradient {
-  background-image: -webkit-linear-gradient(0deg, #25E7B8, #92E93B);
+  background-image: -webkit-linear-gradient(0deg, var(--gradient-start), var(--gradient-end));
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

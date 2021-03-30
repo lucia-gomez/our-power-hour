@@ -1,14 +1,24 @@
 var angle = 0;
-
-var test = document.getElementsByClassName('gradient');
+var elts = document.getElementsByClassName('gradient');
+var startColor = "#25E7B8";
+var endColor = "#92E93B";
 
 function changeAngle() {
-  angle = (angle - 5) % 360;
-  if (test) {
-    [...test].forEach(t => {
-      t.style.backgroundImage = '-webkit-linear-gradient(' + angle + 'deg, #25E7B8, #92E93B)';
+  angle = (angle - 2) % 360;
+  if (elts) {
+    [...elts].forEach(t => {
+      t.style.backgroundImage = `-webkit-linear-gradient(${angle}deg, ${startColor}, ${endColor})`;
     })
   }
 }
 
-setInterval(changeAngle, 200);
+export function setColors(start, end) {
+  startColor = start;
+  endColor = end;
+  document.documentElement.style.setProperty('--gradient-start', start);
+  document.documentElement.style.setProperty('--gradient-end', end);
+}
+
+export default function rotateGradient() {
+  setInterval(changeAngle, 200);
+}

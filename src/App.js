@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Router } from "@reach/router";
+import { setColors } from './gradient.js';
 
 import Home from './pages/Home';
 import ChoosePlaylist from './pages/ChoosePlaylist';
@@ -10,19 +11,23 @@ import ChooseName from './pages/ChooseName';
 import Playlist from './pages/Playlist';
 
 function App() {
+  const gradientStartColor = "#25E7B8";
+  const gradientEndColor = "#92E93B";
   const theme = {
     colors: {
       accent: "rgb(6 40 50 / 90%)",
       bg: "#011d25",
       error: '#38464a',
-      gradient: "-webkit-linear-gradient(left, #25E7B8, #92E93B)",
-      gradientStart: "#25E7B8",
-      gradientEnd: "#92E93B",
-      medium: "rgb(146 233 59 / 20%)",
+      gradient: `-webkit-linear-gradient(left, ${gradientStartColor}, ${gradientEndColor})`,
+      gradientStart: gradientStartColor,
+      gradientEnd: gradientEndColor,
+      medium: "#143c48",
       text: "#fff",
     },
     font: "'Nunito', sans-serif",
   };
+
+  setColors(gradientStartColor, gradientEndColor);
 
   const [playlistID, setPlaylistID] = useState(localStorage.getItem("powerHourPlaylistID"));
   const [sound, setSound] = useState(localStorage.getItem("powerHourSound"));
