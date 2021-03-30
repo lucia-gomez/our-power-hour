@@ -19,7 +19,7 @@ function App() {
     font: "'Nunito', sans-serif",
   };
 
-  setColors(themes[themeName].gradientStart, themes[themeName].gradientEnd);
+  setColors(themes[themeName].gradientColors);
 
   const [playlistID, setPlaylistID] = useState(localStorage.getItem("powerHourPlaylistID"));
   const [sound, setSound] = useState(localStorage.getItem("powerHourSound"));

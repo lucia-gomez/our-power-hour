@@ -5,9 +5,15 @@ function changeAngle() {
   document.documentElement.style.setProperty('--angle', angle + "deg");
 }
 
-export function setColors(start, end) {
-  document.documentElement.style.setProperty('--gradient-start', start);
-  document.documentElement.style.setProperty('--gradient-end', end);
+export function setColors(colors) {
+  let g = "";
+  for (let i = 0; i < colors.length; i++) {
+    g += colors[i];
+    if (i < colors.length - 1) {
+      g += ", ";
+    }
+  }
+  document.documentElement.style.setProperty('--gradient', g);
 }
 
 export default function rotateGradient() {

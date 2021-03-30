@@ -23,8 +23,10 @@ const ChooseColor = (props) => {
     return (
       <defs>
         <linearGradient id={theme[0] + "Gradient"}>
-          <stop stopColor={theme[1].gradientStart} offset="0%" />
-          <stop stopColor={theme[1].gradientEnd} offset="100%" />
+          {theme[1].gradientColors.map((color, i) => {
+            const offset = (100 / (theme[1].gradientColors.length - 1)) * i;
+            return <stop stopColor={color} offset={offset + "%"} key={i} />;
+          })}
         </linearGradient>
       </defs>
     );

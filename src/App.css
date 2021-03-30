@@ -22,7 +22,7 @@ iframe {
 
 .gradient {
   /* variables declared programatically in gradient.js */
-  background-image: -webkit-linear-gradient(var(--angle), var(--gradient-start), var(--gradient-end));
+  background-image: -webkit-linear-gradient(var(--angle), var(--gradient));
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
