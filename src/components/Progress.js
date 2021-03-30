@@ -38,7 +38,7 @@ const CircleComplete = styled(Circle)`
   box-shadow: 0px 0px 0px 3px ${props => props.theme.colors.bg} inset;
 `;
 
-const N = 3;
+const N = 4;
 const Progress = (step) => {
   return (
     <Wrapper id="progressLine">

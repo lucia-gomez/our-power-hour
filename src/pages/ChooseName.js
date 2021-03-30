@@ -18,7 +18,7 @@ const ChooseName = (props) => {
       <Input onChange={x => setValue(x.target.value)} />
       <ButtonLink
         enabled={"true"}
-        to="/drink"
+        to="/4"
         text="Next"
         onClick={() => props.setName(value)} />
     </PageTemplate >

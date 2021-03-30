@@ -9,16 +9,17 @@ import Home from './pages/Home';
 import ChoosePlaylist from './pages/ChoosePlaylist';
 import ChooseSound from './pages/ChooseSound';
 import ChooseName from './pages/ChooseName';
+import ChooseColor from './pages/ChooseColor';
 import Playlist from './pages/Playlist';
 
 function App() {
-  const [themeColors, setThemeColors] = useState(themes.blueGreen);
+  const [themeName, setThemeName] = useState(localStorage.getItem("powerHourTheme") ?? "blueGreen");
   const theme = {
-    colors: themeColors,
+    colors: themes[themeName],
     font: "'Nunito', sans-serif",
   };
 
-  setColors(themeColors.gradientStart, themeColors.gradientEnd);
+  setColors(themes[themeName].gradientStart, themes[themeName].gradientEnd);
 
   const [playlistID, setPlaylistID] = useState(localStorage.getItem("powerHourPlaylistID"));
   const [sound, setSound] = useState(localStorage.getItem("powerHourSound"));
@@ -35,6 +36,7 @@ function App() {
           />
           <ChooseSound path="/2" setSound={setSound} />
           <ChooseName path="/3" setName={setName} />
+          <ChooseColor path="/4" setTheme={setThemeName} />
           <Playlist
             path="/drink"
             playlistID={playlistID}
