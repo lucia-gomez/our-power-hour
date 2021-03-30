@@ -1,32 +1,11 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PageTemplate from './PageTemplate';
+import ScrollableGrid from '../styles/ScrollableGrid';
 import ButtonPrimary from '../styles/ButtonPrimary';
 import ButtonLink from '../components/ButtonLink';
 import Button from '../styles/Button';
 import UIfx from 'uifx';
-
-const ButtonGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-height: 75%;
-  overflow-y: auto;
-  width: 70%;
-  ::-webkit-scrollbar-thumb {
-    background: rgb(146 233 59 / 20%);
-    border-radius: 100px;
-  }
-
-  ::-webkit-scrollbar {
-    background: none;
-    width: 10px;
-  }
-
-  @media only screen and (max-width: 576px) {
-    width: 100%;
-  }
-`;
 
 const flexibleBtn = css`
 margin: 10px 3px;
@@ -107,13 +86,13 @@ const ChooseSound = (props) => {
       path={props.path}
       step={stepNum}
     >
-      <ButtonGrid>
+      <ScrollableGrid>
         {getButton(-1, '???', chooseRandom)}
         {sounds.map((sound, idx) => {
           const click = () => onClick(sound.filename, idx);
           return getButton(idx, sound.label, click);
         })}
-      </ButtonGrid>
+      </ScrollableGrid>
       <ButtonLink to={"/" + (stepNum + 1)} text="Next" enabled={active !== null ? 1 : 0} />
     </PageTemplate >
   );
