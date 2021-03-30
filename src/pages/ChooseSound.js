@@ -12,7 +12,7 @@ const ButtonGrid = styled.div`
   justify-content: center;
   max-height: 75%;
   overflow-y: auto;
-  width: 60%;
+  width: 70%;
   ::-webkit-scrollbar-thumb {
     background: rgb(146 233 59 / 20%);
     border-radius: 100px;
