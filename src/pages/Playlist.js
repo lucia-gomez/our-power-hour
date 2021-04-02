@@ -142,6 +142,7 @@ class Playlist extends Component {
   render() {
     const isDone = this.state.count > 60;
     const bgImage = isDone ? '/confetti.gif' : null;
+    const numShotsCompleted = this.state.randomShotTimes.filter(x => x <= this.state.count).length;
     return (
       <>
         <DrinkPage
@@ -154,6 +155,7 @@ class Playlist extends Component {
               autoSkipSlider={this.setAutoSkip}
               shotsSlider={this.setRandomShots}
               numberSlider={this.setTrackNumber}
+              numShotsCompleted={numShotsCompleted}
             >
               {isDone ? null : this.videoControls()}
             </Sidenav>
@@ -339,7 +341,7 @@ class Playlist extends Component {
   setRandomShots(n) {
     const times = [];
     while (times.length < n) {
-      times.push(Math.floor(Math.random() * 59 + 1));
+      times.push(Math.floor(Math.random() * 58 + 2));
     }
     this.setState({ randomShotTimes: times });
   }

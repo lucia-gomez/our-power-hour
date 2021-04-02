@@ -31,3 +31,47 @@ iframe {
   background-position: center;
   background-attachment: fixed;
 }
+
+.shot-enter {
+  opacity: 0;
+  transform: scale(0.2,0.2);
+}
+
+.shot-enter-active {
+  opacity: 1;
+  transform: scale(1,1);
+  transition: transform 300ms cubic-bezier(.43,.37,.98,.39), opacity 300ms cubic-bezier(.43,.37,.98,.39);
+}
+
+.shot-exit {
+  opacity: 1;
+  transform: scale(1,1);
+}
+
+.shot-exit-active {
+  opacity: 0;
+  transform: scale(0.2,0.2);
+  transition: transform 300ms cubic-bezier(.43,.37,.98,.39), opacity 300ms cubic-bezier(.43,.37,.98,.39);
+}
+
+.shot-counter-enter {
+  opacity: 0;
+}
+
+.shot-counter-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.shot-counter-exit {
+  opacity: 1;
+}
+
+.shot-counter-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+.shot-counter-exit-done {
+  opacity: 0;
+}
