@@ -156,6 +156,7 @@ class Playlist extends Component {
               shotsSlider={this.setRandomShots}
               numberSlider={this.setTrackNumber}
               numShotsCompleted={numShotsCompleted}
+              lockRandomShots={this.state.count > 1}
             >
               {isDone ? null : this.videoControls()}
             </Sidenav>

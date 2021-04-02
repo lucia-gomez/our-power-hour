@@ -111,7 +111,7 @@ const Sidenav = (props) => {
 
   const advanced = (
     <>
-      <Slider {...props} name="Random shots" min={0} max={3} value={numRandomShots} onChange={x => {
+      <Slider {...props} name="Random shots" min={0} max={3} value={numRandomShots} disabled={props.lockRandomShots} onChange={x => {
         props.shotsSlider(x);
         setNumRandomShots(x);
       }} />

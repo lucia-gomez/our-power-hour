@@ -23,6 +23,7 @@ const SliderStyle = styled.input.attrs(props => ({
   -webkit-transition: .2s; 
   transition: opacity .2s;
   margin-right: 10px;
+  opacity: ${props => props.disabled ? 0.4 : 1};
 
   ::-webkit-slider-thumb {
     -webkit-appearance: none; 
@@ -48,6 +49,7 @@ const Slider = (props) => {
             max={props.max}
             step={props.step ?? 1}
             value={value}
+            disabled={props.disabled}
             onInput={e => {
               setValue(e.target.value);
               props.onChange(Number(e.target.value));
@@ -62,3 +64,4 @@ const Slider = (props) => {
 }
 
 export default Slider;
+export { SliderStyle };
