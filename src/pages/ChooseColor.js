@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PageTemplate from './PageTemplate';
 import ScrollableGrid from '../styles/ScrollableGrid';
@@ -14,7 +15,10 @@ const ColorScheme = styled.svg`
 `;
 
 const ChooseColor = (props) => {
+  const [selected, setSelected] = useState(localStorage.getItem("powerHourTheme") ?? Object.keys(themes)[0]);
+
   const clickTheme = (themeName) => {
+    setSelected(themeName);
     props.setTheme(themeName);
     localStorage.setItem("powerHourTheme", themeName);
   }
@@ -41,12 +45,11 @@ const ChooseColor = (props) => {
       path={props.path}
       step={stepNum}
     >
+      <p>{selected.replace("-", " ")}</p>
       <ScrollableGrid>
         {Object.entries(themes).map((theme, i) =>
           <ColorScheme onClick={() => clickTheme(theme[0])} key={i}>
             {defineGradient(theme)}
-            <circle cx={CIRCLE_SIZE / 2} cy={CIRCLE_SIZE / 2} r={CIRCLE_SIZE / 2} fill={`url(#${theme[0]}Gradient)`} />
-            <circle cx={CIRCLE_SIZE / 2} cy={CIRCLE_SIZE / 2} r={(CIRCLE_SIZE / 2) * 0.8} fill={theme[1].bg} />
           </ColorScheme>
         )}
       </ScrollableGrid>

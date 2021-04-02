@@ -13,10 +13,11 @@ import ChooseColor from './pages/ChooseColor';
 import Playlist from './pages/Playlist';
 
 function App() {
-  const [themeName, setThemeName] = useState(localStorage.getItem("powerHourTheme") ?? "blueGreen");
+  const defaultThemeName = Object.keys(themes)[0];
+  const [themeName, setThemeName] = useState(localStorage.getItem("powerHourTheme") ?? defaultThemeName);
   if (themes[themeName] === undefined) {
-    localStorage.setItem("powerHourTheme", "blueGreen");
-    setThemeName("blueGreen");
+    localStorage.setItem("powerHourTheme", defaultThemeName);
+    setThemeName(defaultThemeName);
   }
 
   const theme = {
