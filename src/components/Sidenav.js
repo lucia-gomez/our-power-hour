@@ -52,6 +52,8 @@ const Icon = styled.i`
 const Sidenav = (props) => {
   const [isOpen, toggleOpen] = useState(true);
   const [showAdvanced, toggleShowAdvanced] = useState(false);
+  const [numRandomShots, setNumRandomShots] = useState(0);
+  const [autoSkipAmount, setAutoSkipAmount] = useState(0);
 
   const openNav = () => {
     document.getElementById("sidenav").style.width = WIDTH + "px";
@@ -73,6 +75,10 @@ const Sidenav = (props) => {
   const advanced = (
     <>
       <Slider {...props} name="Random shots" min={0} max={3} value={0} onChange={props.shotsSlider} />
+      <Slider {...props} name="Random shots" min={0} max={3} value={numRandomShots} onChange={x => {
+        props.shotsSlider(x);
+        setNumRandomShots(x);
+      }} />
       <Slider {...props} name="Skip to..." min={1} max={60} value={1} onChange={props.numberSlider} />
       <Slider
         {...props}
@@ -80,9 +86,14 @@ const Sidenav = (props) => {
         min={0}
         max={60}
         value={0}
+        value={autoSkipAmount}
         step={5}
         labelFormat={x => x + "s"}
         onChange={props.autoSkipSlider}
+        onChange={x => {
+          props.autoSkipSlider(x);
+          setAutoSkipAmount(x);
+        }}
       />
     </>
   );
