@@ -20,6 +20,7 @@ function App() {
     setThemeName(defaultThemeName);
   }
 
+  document.documentElement.style.setProperty('--bg', themes[themeName].bg);
   const theme = {
     colors: themes[themeName],
     font: "'Nunito', sans-serif",
