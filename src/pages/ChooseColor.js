@@ -12,6 +12,12 @@ const ColorScheme = styled.svg`
   height: ${CIRCLE_SIZE}px;
   width: ${CIRCLE_SIZE}px;
   margin-right: 15px;
+  margin-bottom: 20px;
+`;
+
+const ColorCircle = styled.circle`
+  cx: ${CIRCLE_SIZE / 2};
+  cy: ${CIRCLE_SIZE / 2};
 `;
 
 const ChooseColor = (props) => {
@@ -50,6 +56,8 @@ const ChooseColor = (props) => {
         {Object.entries(themes).map((theme, i) =>
           <ColorScheme onClick={() => clickTheme(theme[0])} key={i}>
             {defineGradient(theme)}
+            <ColorCircle r={CIRCLE_SIZE / 2} fill={`url(#${theme[0]}Gradient)`} />
+            <ColorCircle r={(CIRCLE_SIZE / 2) * 0.8} fill={theme[1].bg} />
           </ColorScheme>
         )}
       </ScrollableGrid>
