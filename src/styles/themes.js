@@ -52,15 +52,19 @@ const themes = {
     accent: "rgb(38 23 43/ 90%)",
     bg: "#141414",
     gradientColors: ["#1cff33", "#8c51f0"],
+    gradientColors: ["#1cff33", "#f58e20"],
     medium: "#3b2642",
     text: "#b55c0b",
+    text: "#a85de3",
   },
   "Spring": {
     accent: "rgb(204 230 195/ 90%)",
     bg: "#b5d4ab",
+    bg: "#e2f2dc",
     gradientColors: ["#53cf7a", "#b691db"],
     medium: "#d6f0ce",
     text: "#5c7853",
+    text: "#5b3178",
   }
 };
 
