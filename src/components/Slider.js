@@ -23,6 +23,7 @@ const SliderStyle = styled.input.attrs(props => ({
   transition: opacity .2s;
   margin-right: 10px;
   opacity: ${props => props.disabled ? 0.4 : 1};
+  box-shadow: ${props => props.theme.colors.shadow};
 
   ::-webkit-slider-thumb {
     -webkit-appearance: none; 
