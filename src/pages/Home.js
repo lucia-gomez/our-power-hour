@@ -24,7 +24,7 @@ const Home = (props) => {
     <HomePage path={props.path} bgImage={bgImage}>
       <div>
         <Header>Our Power Hour</Header>
-        <p>Use a Spotify or YouTube playlist for a customized Power Hour experience</p>
+        <p>Use any YouTube playlist for a customized Power Hour experience</p>
       </div>
       <br />
       <ButtonLink to="/1" text="Get started" enabled={"true"} />
