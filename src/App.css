@@ -75,3 +75,24 @@ iframe {
 .shot-counter-exit-done {
   opacity: 0;
 }
+
+.advanced-settings-enter {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+.advanced-settings-enter-active {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.advanced-settings-exit {
+  opacity: 1;
+}
+
+.advanced-settings-exit-active {
+  opacity: 0;
+  transform: translateY(-100px);
+  transition: opacity 300ms, transform 300ms;
+}

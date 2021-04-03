@@ -1,12 +1,8 @@
-import styled, { css, keyframes } from 'styled-components';
-import { useState, useEffect, createRef } from 'react';
-import { rubberBand } from 'react-animations';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 import { ButtonIconStyle } from '../components/ButtonIcon';
-import Slider from '../components/Slider';
-import { ReactComponent as ShotGlassFullIcon } from '../assets/shot-glass-full.svg';
-import { ReactComponent as ShotGlassEmptyIcon } from '../assets/shot-glass-empty.svg';
-
+import AdvancedSettings from './AdvancedSettings';
+import ShotCounter from './ShotCounter';
 
 const WIDTH = 250;
 
@@ -38,59 +34,9 @@ const SidenavButton = styled(ButtonIconStyle)`
   font-size: 5vh;
 `;
 
-const AdvancedButton = styled.button.attrs(props => ({
-  className: 'gradient'
-}))`
-  border: none;
-  cursor: pointer;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-family: 'Nunito';
-  width: ${WIDTH}px;
-`;
-
-const Icon = styled.i`
-  padding-left: 5px;
-  vertical-align: middle;
-`;
-
-const ShotCounterRow = styled(TransitionGroup)`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-`;
-
-const shotGlassCSS = css`
-  height: 40px;
-  width: unset;
-  fill: ${props => props.theme.colors.text};
-`;
-
-const ShotGlassFull = styled(ShotGlassFullIcon)`
-  ${shotGlassCSS}
-`;
-
-const inAnimation = keyframes`${rubberBand}`;
-const ShotGlassEmpty = styled(ShotGlassEmptyIcon)`
-  ${shotGlassCSS}
-  animation: 500ms ${inAnimation};
-`;
-
-const ShotCounterText = styled.p.attrs(props => ({
-  className: 'gradient'
-}))`
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 18px;
-  margin: 0px;
-  margin-bottom: 10px;
-`;
-
 const Sidenav = (props) => {
   const [isOpen, toggleOpen] = useState(true);
-  const [showAdvanced, toggleShowAdvanced] = useState(false);
   const [numRandomShots, setNumRandomShots] = useState(0);
-  const [autoSkipAmount, setAutoSkipAmount] = useState(0);
 
   const openNav = () => {
     document.getElementById("sidenav").style.width = WIDTH + "px";
@@ -109,59 +55,6 @@ const Sidenav = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const advanced = (
-    <>
-      <Slider {...props} name="Random shots" min={0} max={3} value={numRandomShots} disabled={props.count > 1} onChange={x => {
-        props.shotsSlider(x);
-        setNumRandomShots(x);
-      }} />
-      <Slider {...props} name="Skip to..." min={1} max={60} value={props.count} onChange={props.numberSlider} />
-      <Slider
-        {...props}
-        name="Auto skip..."
-        min={0}
-        max={60}
-        value={autoSkipAmount}
-        step={5}
-        labelFormat={x => x + "s"}
-        onChange={x => {
-          props.autoSkipSlider(x);
-          setAutoSkipAmount(x);
-        }}
-      />
-    </>
-  );
-
-  const containerRef = createRef(null);
-  const shotCounter = (
-    <CSSTransition
-      in={numRandomShots > 0}
-      timeout={300}
-      classNames='shot-counter'
-      mountOnEnter={true}
-      unmountOnExit={true}
-      nodeRef={containerRef}
-    >
-      <div ref={containerRef}>
-        <ShotCounterText>Shots remaining:</ShotCounterText>
-        <ShotCounterRow>
-          {[...Array(numRandomShots).keys()].map(i => {
-            const itemRef = createRef(null);
-            return (<CSSTransition
-              key={i}
-              timeout={300}
-              classNames='shot'
-              nodeRef={itemRef}
-            >
-              {i < props.numShotsCompleted ? <ShotGlassEmpty ref={itemRef} /> : <ShotGlassFull ref={itemRef} />}
-            </CSSTransition>
-            );
-          })}
-        </ShotCounterRow>
-      </div>
-    </CSSTransition>
-  );
-
   return (
     <>
       <SidenavBar id="sidenav" >
@@ -169,17 +62,15 @@ const Sidenav = (props) => {
           <br />
           {props.children}
           <br />
-          {shotCounter}
-          <AdvancedButton onClick={() => toggleShowAdvanced(!showAdvanced)}>
-            <p>Advanced
-            <Icon className='material-icons'>
-                {showAdvanced ? "keyboard_arrow_down" : "keyboard_arrow_right"}
-              </Icon>
-            </p>
-          </AdvancedButton>
-          {showAdvanced ? advanced : null}
+          {<ShotCounter numRandomShots={numRandomShots} numShotsCompleted={props.numShotsCompleted} />}
+          {<AdvancedSettings
+            {...props}
+            width={WIDTH}
+            numRandomShots={numRandomShots}
+            setNumRandomShots={setNumRandomShots}
+          />}
         </SidenavContent>
-      </SidenavBar>
+      </SidenavBar >
       <SidenavButton onClick={isOpen ? closeNav : openNav} active={"true"} size={30} className="material-icons gradient">
         {isOpen ? "close" : "menu"}
       </SidenavButton>
