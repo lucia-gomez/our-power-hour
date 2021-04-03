@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 
 const SliderContainer = styled.div`
   margin: 20px auto;
@@ -37,7 +36,6 @@ const SliderStyle = styled.input.attrs(props => ({
 `
 
 const Slider = (props) => {
-  const [value, setValue] = useState(props.value)
   return (
     <SliderContainer>
       <label>
@@ -48,15 +46,14 @@ const Slider = (props) => {
             min={props.min}
             max={props.max}
             step={props.step ?? 1}
-            value={value}
+            value={props.value}
             disabled={props.disabled}
             onInput={e => {
-              setValue(e.target.value);
               props.onChange(Number(e.target.value));
             }
             }
           />
-          {props.labelFormat ? props.labelFormat(value) : value}
+          {props.labelFormat ? props.labelFormat(props.value) : props.value}
         </SliderRow>
       </label>
     </SliderContainer>

@@ -266,11 +266,10 @@ class Playlist extends Component {
     this.setState(prev => ({ count: prev.count + 1, paused: false }), () => {
       const count = this.state.count;
       if (count <= 60 && this.state.ready) {
-        //this.player.getInternalPlayer().pauseVideo();
         const sound = this.state.randomShotTimes.includes(count) ? this.shotsSound : this.sound;
+        sound.play();
         this.timer.repeat();
         this.skipSong();
-        sound.play();
       }
     });
   }
