@@ -153,10 +153,10 @@ class Playlist extends Component {
           <Nav>
             <Sidenav
               autoSkipSlider={this.setAutoSkip}
+              count={this.state.count}
               shotsSlider={this.setRandomShots}
               numberSlider={this.setTrackNumber}
               numShotsCompleted={numShotsCompleted}
-              lockRandomShots={this.state.count > 1}
             >
               {isDone ? null : this.videoControls()}
             </Sidenav>
