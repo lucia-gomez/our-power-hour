@@ -93,7 +93,12 @@ const ChooseSound = (props) => {
           return getButton(idx, sound.label, click);
         })}
       </ScrollableGrid>
-      <ButtonLink to={"/" + (stepNum + 1)} text="Next" enabled={active !== null ? 1 : 0} />
+      <ButtonLink
+        to={"/" + (stepNum + 1)}
+        text="Next"
+        enabled={active !== null ? 1 : 0}
+        errorMsg="Click on one of the above sounds"
+      />
     </PageTemplate >
   );
 };
