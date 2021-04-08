@@ -15,7 +15,7 @@ const ChooseName = (props) => {
       path={props.path}
       step={stepNum}
     >
-      <Input onChange={x => setValue(x.target.value)} />
+      <Input onChange={x => setValue(x.target.value)} placeholder="Our Power Hour" />
       <ButtonLink
         enabled={"true"}
         to="/4"
