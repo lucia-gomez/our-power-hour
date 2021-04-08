@@ -65,8 +65,9 @@ const ChoosePlaylist = (props) => {
         <Input onChange={x => {
           const id = getPlaylistID(x.target.value);
           id ? validatePlaylistID(id) : setURL("");
-        }
-        } />
+        }}
+          placeholder="Enter a playlist URL"
+        />
         <p>{title}</p>
       </div>
       <ButtonLink
