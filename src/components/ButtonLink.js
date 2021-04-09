@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from '@reach/router';
 import Button from '../styles/Button';
 import ButtonPrimary from '../styles/ButtonPrimary';
-import { Tooltip, TooltipWrapper } from '../styles/Tooltip';
+import { ErrorMessage, ErrorWrapper } from '../styles/ErrorMessage';
 
 const ButtonLink = (props) => {
   const [error, toggleError] = useState(false);
@@ -24,10 +24,10 @@ const ButtonLink = (props) => {
       <Link to={props.to} onClick={props.onClick}>
         {props.secondary ? <Button>{props.text}</Button> : <ButtonPrimary>{props.text}</ButtonPrimary>}
       </Link> :
-      <TooltipWrapper>
-        {props.errorMsg ? <Tooltip show={showErrorMsg}>{props.errorMsg}</Tooltip> : null}
+      <ErrorWrapper>
+        {props.errorMsg ? <ErrorMessage show={showErrorMsg}>{props.errorMsg}</ErrorMessage> : null}
         <Button onClick={onError} error={error}>{props.text}</Button>
-      </TooltipWrapper>
+      </ErrorWrapper>
   );
 };
 

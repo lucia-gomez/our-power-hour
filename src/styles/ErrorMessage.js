@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Tooltip = styled.div`
+const ErrorMessage = styled.div`
   visibility: ${props => props.show ? 'visible' : 'hidden'};
   transition: visibility 0.25s;
   width: max-content;
@@ -18,8 +18,8 @@ const Tooltip = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const TooltipWrapper = styled.div`
+const ErrorWrapper = styled.div`
   position: relative;
 `;
 
-export { Tooltip, TooltipWrapper };
+export { ErrorMessage, ErrorWrapper };
