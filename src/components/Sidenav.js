@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { ButtonIconStyle } from '../components/ButtonIcon';
 import AdvancedSettings from './AdvancedSettings';
 import ShotCounter from './ShotCounter';
-import Icon from '../styles/Icon';
 
 const WIDTH = 250;
 
