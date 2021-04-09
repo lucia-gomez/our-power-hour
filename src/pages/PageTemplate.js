@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Page from '../styles/Page';
 import Header from '../styles/Header';
-import Progress from '../components/Progress';
 import Tooltip from '../components/Tooltip';
 
 const StepPage = styled(Page)`
@@ -34,7 +33,6 @@ const PageTemplate = (props) => {
       <StepPageContent>
         {props.children}
       </StepPageContent>
-      {props.step > 0 ? Progress(props.step) : null}
     </StepPage >
   );
 };

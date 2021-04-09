@@ -1,7 +1,8 @@
 import './App.css';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { Router } from "@reach/router";
+import { Router, Location } from "@reach/router";
+
 import { setColors } from './gradient.js';
 import themes from './styles/themes';
 
@@ -11,6 +12,7 @@ import ChooseSound from './pages/ChooseSound';
 import ChooseName from './pages/ChooseName';
 import ChooseColor from './pages/ChooseColor';
 import Playlist from './pages/Playlist';
+import Progress from './components/Progress';
 
 function App() {
   const defaultThemeName = Object.keys(themes)[0];
@@ -51,6 +53,31 @@ function App() {
             sound={sound}
           />
         </Router>
+        <Location>
+          {({ location }) => {
+            const path = location.pathname.substring(1);
+            const step = isNaN(path) ? 0 : Number(path);
+
+            return (
+              <>
+                <Router>
+                  <Home path="/" />
+                  <ChoosePlaylist path="/1" setPlaylistID={setPlaylistID} />
+                  <ChooseSound path="/2" setSound={setSound} />
+                  <ChooseName path="/3" setName={setName} />
+                  <ChooseColor path="/4" setTheme={setThemeName} />
+                  <Playlist
+                    path="/drink"
+                    playlistID={playlistID}
+                    name={name}
+                    sound={sound}
+                  />
+                </Router>
+                {step > 0 ? Progress(step) : null}
+              </>
+            )
+          }}
+        </Location>
       </ThemeProvider>
     </div>
   );
