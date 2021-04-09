@@ -12,6 +12,7 @@ const ChooseName = (props) => {
     <PageTemplate
       title={"Step " + stepNum}
       caption="Name your Power Hour (optional)"
+      helpText="The name will be displayed at the top of the screen"
       path={props.path}
       step={stepNum}
     >

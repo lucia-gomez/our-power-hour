@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Page from '../styles/Page';
 import Header from '../styles/Header';
 import Progress from '../components/Progress';
+import Tooltip from '../components/Tooltip';
 
 const StepPage = styled(Page)`
   display: grid;
@@ -17,12 +18,18 @@ const StepPageContent = styled.div`
   overflow: hidden;
 `;
 
+const Caption = styled.p`
+  margin: 0;
+  display: inline;
+`;
+
 const PageTemplate = (props) => {
   return (
     <StepPage>
       <div>
         <Header className='gradient'>{props.title}</Header>
-        {props.caption ? <p>{props.caption}</p> : null}
+        {props.caption ? <Caption>{props.caption}</Caption> : null}
+        {props.helpText ? <Tooltip text={props.helpText} /> : null}
       </div>
       <StepPageContent>
         {props.children}
