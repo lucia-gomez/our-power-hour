@@ -83,6 +83,7 @@ const ChooseSound = (props) => {
     <PageTemplate
       title={"Step " + stepNum}
       caption="Choose a timer sound effect"
+      helpText="You'll drink when you hear this sound"
       path={props.path}
       step={stepNum}
     >

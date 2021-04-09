@@ -58,7 +58,8 @@ const ChoosePlaylist = (props) => {
   return (
     <PageTemplate
       title={"Step " + stepNum}
-      caption={`Enter the URL of a YouTube playlist`}
+      caption="Enter the URL of a YouTube playlist"
+      helpText="This will contain the songs you'll drink to"
       step={stepNum}
     >
       <div>
