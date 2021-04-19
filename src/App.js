@@ -37,22 +37,6 @@ function App() {
   return (
     <div className="App" >
       <ThemeProvider theme={theme}>
-        <Router>
-          <Home path="/" />
-          <ChoosePlaylist
-            path="/1"
-            setPlaylistID={setPlaylistID}
-          />
-          <ChooseSound path="/2" setSound={setSound} />
-          <ChooseName path="/3" setName={setName} />
-          <ChooseColor path="/4" setTheme={setThemeName} />
-          <Playlist
-            path="/drink"
-            playlistID={playlistID}
-            name={name}
-            sound={sound}
-          />
-        </Router>
         <Location>
           {({ location }) => {
             const path = location.pathname.substring(1);
