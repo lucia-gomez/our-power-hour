@@ -180,6 +180,7 @@ class Playlist extends Component {
           onPlay={this.handlePlayerPlay}
           onPause={this.handlePlayerPause}
           onReady={this.onReady}
+          onEnded={this.previousSong}
           controls={true}
           playing={!this.state.paused}
           ref={player => {
