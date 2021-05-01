@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import { rubberBand } from 'react-animations';
 
 const N = 4;
-const icons = ["🎶", "🔈", "✏️", "🎨"];
+const icons = ["queue_music", "notifications", "edit", "palette"];
 
 const Wrapper = styled.div`
   background-color: ${props => props.theme.colors.bg};
@@ -33,17 +33,8 @@ const Circle = styled.div.attrs(props => ({
   border-radius: 100px;
   box-shadow: 0px 0px 50px 50px ${props => props.theme.colors.bg} inset;
   margin: 0px 10px;
-  z-index: 10;
+  z-index: 1;
   position: relative;
-
-  ::before {
-    content: "${props => icons[props.index]}";
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    bottom: 15%;
-    transform: translateX(-50%);
-  }
 `;
 
 const inAnimation = keyframes`${rubberBand}`;
@@ -56,17 +47,40 @@ const CircleComplete = styled(Circle)`
   box-shadow: 0px 0px 0px 3px ${props => props.theme.colors.bg} inset;
 `;
 
+const CircleContainer = styled.div`
+  position: relative;
+`;
+
+const CircleIcon = styled.i.attrs(_ => ({
+  className: "material-icons"
+}))`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: ${props => props.theme.colors.text};
+  font-size: 30px;
+  z-index: 3;
+`;
+
+const CircleLabel = (child, key) => (
+  <CircleContainer key={key}>
+    <CircleIcon>{icons[key]}</CircleIcon>
+    {child}
+  </CircleContainer>
+);
+
 const Progress = (step) => {
   return (
     <Wrapper id="progressLine">
       <Line />
       {Array.from(Array(N)).map((_, index) => {
         if (index === step - 1) {
-          return <CircleCurrent key={index} index={index} />;
+          return CircleLabel(<CircleCurrent />, index);
         } else if (index < step - 1) {
-          return <CircleComplete key={index} index={index} />;
+          return CircleLabel(<CircleComplete />, index);
         }
-        return <Circle key={index} index={index} />;
+        return CircleLabel(<Circle />, index);
       })}
     </Wrapper>
   );
