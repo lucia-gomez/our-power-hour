@@ -208,13 +208,23 @@ class Playlist extends Component {
 
   videoControls() {
     const primaryButtons = [
-      { icon: "skip_previous", fn: this.previousSong, active: true },
+      {
+        icon: "skip_previous", fn: () => {
+          this.previousSong();
+          window.umami.trackEvent("Previous track", "nav");
+        }, active: true
+      },
       {
         icon: this.state.paused ? "play_circle" : "pause_circle",
         fn: this.state.paused ? this.handlePlayerPlay : this.handlePlayerPause,
         active: true,
       },
-      { icon: "skip_next", fn: this.skipSong, active: true },
+      {
+        icon: "skip_next", fn: () => {
+          this.skipSong();
+          window.umami.trackEvent("Next track", "nav");
+        }, active: true
+      },
     ];
     const secondaryButtons = [
       { icon: this.state.muted ? "volume_off" : "volume_up", fn: this.mute, active: this.state.muted },
@@ -300,13 +310,17 @@ class Playlist extends Component {
   }
 
   forward30() {
-    if (this.state.ready)
+    if (this.state.ready) {
       this.player.seekTo(this.player.getCurrentTime() + 30);
+      window.umami.trackEvent("Forward 30", "nav");
+    }
   }
 
   back10() {
-    if (this.state.ready)
+    if (this.state.ready) {
       this.player.seekTo(this.player.getCurrentTime() - 10);
+      window.umami.trackEvent("Back 10", "nav");
+    }
   }
 
   skipSong() {
@@ -327,6 +341,7 @@ class Playlist extends Component {
     if (this.state.ready) {
       this.player.getInternalPlayer().setShuffle(!this.state.shuffled);
       this.setState(prev => ({ shuffled: !prev.shuffled }));
+      window.umami.trackEvent("Toggle shuffle", "nav");
     }
   }
 
@@ -337,6 +352,7 @@ class Playlist extends Component {
       const p = this.player.getInternalPlayer();
       this.state.muted ? p.mute() : p.unMute();
     });
+    window.umami.trackEvent("Toggle mute", "nav");
   }
 
   setRandomShots(n) {
@@ -345,14 +361,17 @@ class Playlist extends Component {
       times.push(Math.floor(Math.random() * 58 + 2));
     }
     this.setState({ randomShotTimes: times });
+    // window.umami.trackEvent("Random shots", "nav");
   }
 
   setTrackNumber(n) {
     this.setState({ count: n });
+    // window.umami.trackEvent("Skip to", "nav");
   }
 
   setAutoSkip(n) {
     this.setState({ autoSkip: n });
+    // window.umami.trackEvent("Auto skip", "nav");
   }
 }
 

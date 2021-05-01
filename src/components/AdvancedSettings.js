@@ -26,9 +26,14 @@ const AdvancedSettings = (props) => {
 
   const advancedRef = createRef(null);
 
+  const onClick = () => {
+    toggleShowAdvanced(!showAdvanced);
+    window.umami.trackEvent('Toggle advanced', 'nav');
+  }
+
   return (
     <>
-      <AdvancedButton onClick={() => toggleShowAdvanced(!showAdvanced)}>
+      <AdvancedButton onClick={onClick}>
         <p>Advanced
             <Icon className='material-icons'>
             {showAdvanced ? "keyboard_arrow_down" : "keyboard_arrow_right"}

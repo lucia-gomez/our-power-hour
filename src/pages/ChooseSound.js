@@ -62,6 +62,7 @@ const ChooseSound = (props) => {
     localStorage.setItem("powerHourSound", sound);
     props.setSound(sound);
     setActive(idx);
+    window.umami.trackEvent(sound, "sound");
   };
 
   const chooseRandom = () => {

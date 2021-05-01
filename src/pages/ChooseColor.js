@@ -27,6 +27,7 @@ const ChooseColor = (props) => {
     setSelected(themeName);
     props.setTheme(themeName);
     localStorage.setItem("powerHourTheme", themeName);
+    window.umami.trackEvent(themeName, "theme");
   }
 
   const defineGradient = theme => {
