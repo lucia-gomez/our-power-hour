@@ -27,11 +27,10 @@ const ShotGlassEmpty = styled(ShotGlassEmptyIcon)`
   animation: 500ms ${inAnimation};
 `;
 
-const ShotCounterText = styled.p.attrs(props => ({
-  className: 'gradient'
-}))`
+const ShotCounterText = styled.p`
+  color: ${props => props.theme.colors.text};
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* -webkit-text-fill-color: transparent; */
   font-size: 18px;
   margin: 0px;
   margin-bottom: 10px;

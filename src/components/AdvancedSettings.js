@@ -9,13 +9,11 @@ const AdvancedContainer = styled.div`
   overflow: hidden;
 `;
 
-const AdvancedButton = styled.button.attrs(props => ({
-  className: 'gradient'
-}))`
+const AdvancedButton = styled.button`
   border: none;
   cursor: pointer;
+  color: ${props => props.theme.colors.text};
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-family: 'Nunito';
   width: ${props => props.width}px;
 `;

@@ -52,7 +52,7 @@ const ChooseColor = (props) => {
       path={props.path}
       step={stepNum}
     >
-      <p>{selected.replace("-", " ")}</p>
+      <p>{selected.replaceAll("-", " ")}</p>
       <ScrollableGrid>
         {Object.entries(themes).map((theme, i) =>
           <ColorScheme onClick={() => clickTheme(theme[0])} key={i}>
