@@ -253,6 +253,7 @@ class Playlist extends Component {
   }
 
   endScreen() {
+    window.umami.trackEvent("Finished", "general");
     return (
       <EndScreen>
         <h1>🎉 You survived! 🎉</h1>
