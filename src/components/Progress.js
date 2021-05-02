@@ -5,7 +5,6 @@ const N = 4;
 const icons = ["queue_music", "notifications", "edit", "palette"];
 
 const Wrapper = styled.div`
-  background-color: ${props => props.theme.colors.bg};
   height: 70px;
   width: 100%;
   position: absolute;
@@ -35,6 +34,7 @@ const Circle = styled.div.attrs(props => ({
   margin: 0px 10px;
   z-index: 1;
   position: relative;
+  transition: box-shadow 0.2s;
 `;
 
 const inAnimation = keyframes`${rubberBand}`;

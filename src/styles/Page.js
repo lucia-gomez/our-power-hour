@@ -6,6 +6,7 @@ const Page = styled.div`
   position: relative;
   height: 100vh;
   padding: 0px 10px;
+  transition: all 0.2s;
 `;
 
 export default Page;

@@ -19,7 +19,7 @@ const DrinkPage = styled(Page)`
   display: grid;
   grid-template-rows: 8vh 1fr;
   background-image: url(${props => props.bgImage}); 
-  background-blend-mode: color-dodge;
+  background-blend-mode: ${props => props.theme.colors.isLight ? "screen" : "color-dodge"};
   background-size: cover;
   padding: 0px;
   transition: margin-left .5s;
