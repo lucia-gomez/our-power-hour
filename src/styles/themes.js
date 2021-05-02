@@ -65,14 +65,6 @@ const themes = {
     text: "#a85de3",
     shadow: shadow("#19101c"),
   },
-  "Spring": {
-    accent: "rgb(204 230 195/ 90%)",
-    bg: "#e2f2dc",
-    gradientColors: ["#53cf7a", "#b691db"],
-    medium: "#d6f0ce",
-    text: "#5b3178",
-    shadow: shadow("#c3d4be"),
-  },
 };
 
 export default themes;
