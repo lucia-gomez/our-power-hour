@@ -57,9 +57,14 @@ const OverlayText = styled.h3.attrs(props => ({
   width: fit-content;
   text-align:center;
   margin: 0 auto;
+  font-size: 5vh;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
+
+  @media only screen and (max-height: 812px) {
+    font-size: 40px;
+  }
 `;
 
 const ButtonRow = styled.div`
