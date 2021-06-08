@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Page from '../styles/Page';
 import Header from '../styles/Header';
@@ -7,8 +7,8 @@ import ReactPlayer from 'react-player/youtube';
 import Sidenav from '../components/Sidenav';
 import { Link } from '@reach/router';
 
-import Timer from '../components/Timer';
-import UIfx from 'uifx';
+import { useTimer } from 'react-timer-hook';
+import useSound from 'use-sound';
 import ShotsSound from '../sounds/shots.mp3';
 
 import ButtonIcon, { ButtonIconStyle } from '../components/ButtonIcon';
@@ -92,112 +92,61 @@ const EndScreen = styled.div`
   }
 `
 
-class Playlist extends Component {
+const TIMER_SEC = 60;
+const getTimerTime = () => {
+  let time = new Date();
+  time.setSeconds(time.getSeconds() + TIMER_SEC);
+  return time;
+}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      autoSkip: 0,
-      count: 1,
-      justStarted: false,
-      muted: false,
-      paused: true,
-      pauseTimer: null,
-      randomShotTimes: [],
-      ready: false,
-      resumeTimer: null,
-      shuffled: false,
-    };
+const Playlist = props => {
 
-    this.handlePlayerPause = this.handlePlayerPause.bind(this);
-    this.handlePlayerPlay = this.handlePlayerPlay.bind(this);
-    this.nextTrack = this.nextTrack.bind(this);
-    this.replay = this.replay.bind(this);
-    this.forward30 = this.forward30.bind(this);
-    this.back10 = this.back10.bind(this);
-    this.skipSong = this.skipSong.bind(this);
-    this.previousSong = this.previousSong.bind(this);
-    this.shuffle = this.shuffle.bind(this);
-    this.mute = this.mute.bind(this);
-    this.onReady = this.onReady.bind(this);
-    this.setRandomShots = this.setRandomShots.bind(this);
-    this.setTrackNumber = this.setTrackNumber.bind(this);
-    this.setAutoSkip = this.setAutoSkip.bind(this);
-    this.autoSkip = this.autoSkip.bind(this);
+  const player = useRef(null);
 
-    this.timer = new Timer(this.nextTrack, 60000);
-    var mp3 = require('../sounds/' + this.props.sound);
-    this.sound = new UIfx(
-      mp3.default,
-      {
-        volume: 1.0,
-        throttleMs: 0,
-      }
-    );
+  const {
+    pause: pauseTimer,
+    resume: resumeTimer,
+    restart: restartTimer,
+  } = useTimer({ expiryTimestamp: getTimerTime(), onExpire: nextTrack });
 
-    this.shotsSound = new UIfx(
-      ShotsSound,
-      {
-        volume: 0.7,
-        throttleMs: 0,
-      }
-    );
-  }
+  const [autoSkip, setAutoSkip] = useState(0);
+  const [count, setCount] = useState(1);
+  const [justStarted, toggleJustStarted] = useState(false);
+  const [muted, toggleMuted] = useState(false);
+  const [paused, togglePaused] = useState(true);
+  const [randomShotTimes, setRandomShotTimes] = useState([]);
+  const [ready, toggleReady] = useState(false);
+  const [shuffled, toggleShuffled] = useState(false);
 
-  render() {
-    const isDone = this.state.count > 60;
-    const bgImage = isDone ? '/confetti.gif' : null;
-    const numShotsCompleted = this.state.randomShotTimes.filter(x => x <= this.state.count).length;
-    return (
-      <>
-        <DrinkPage
-          bgImage={process.env.PUBLIC_URL + bgImage}
-          path={this.props.path}
-          id="player-content"
-        >
-          <Nav>
-            <Sidenav
-              autoSkipSlider={this.setAutoSkip}
-              count={this.state.count}
-              shotsSlider={this.setRandomShots}
-              numberSlider={this.setTrackNumber}
-              numShotsCompleted={numShotsCompleted}
-            >
-              {isDone ? null : this.videoControls()}
-            </Sidenav>
-            <PlaylistName>{this.props.name ?? "Our Power Hour"}</PlaylistName>
-            <Link to="/">
-              <Home active={"true"} className="material-icons gradient" >home</Home>
-            </Link>
-          </Nav>
-          {isDone ? this.endScreen() : this.videoPlayer()}
-        </DrinkPage >
-      </>
-    );
-  }
+  var mp3 = require('../sounds/' + props.sound);
 
-  videoPlayer() {
+  const [drinkSound] = useSound(mp3.default);
+  const [shotsSound] = useSound(ShotsSound);
+
+  const isDone = count > 60;
+  const bgImage = isDone ? '/confetti.gif' : null;
+  const numShotsCompleted = randomShotTimes.filter(x => x <= count).length;
+
+  const videoPlayer = () => {
     return (
       <VideoContainer>
         <ReactPlayer
-          url={`https://www.youtube.com/playlist?list=${this.props.playlistID}`}
-          onError={this.skipSong}
-          onPlay={this.handlePlayerPlay}
-          onPause={this.handlePlayerPause}
-          onReady={this.onReady}
-          onEnded={this.previousSong}
+          url={`https://www.youtube.com/playlist?list=${props.playlistID}`}
+          onError={skipSong}
+          onPlay={handlePlayerPlay}
+          onPause={handlePlayerPause}
+          onReady={() => toggleReady(true)}
+          onEnded={previousSong}
           controls={true}
-          playing={!this.state.paused}
-          ref={player => {
-            this.player = player
-          }}
+          playing={!paused}
+          ref={player}
           config={{
             youtube: {
-              onUnstarted: this.autoSkip,
+              onUnstarted: () => toggleJustStarted(true),
               playerVars: {
                 color: "white",
                 listType: "playlist",
-                list: this.props.playlistID,
+                list: props.playlistID,
                 loop: 1,
               }
             }
@@ -206,36 +155,36 @@ class Playlist extends Component {
           width="100%"
           style={{ position: 'relative' }}
         />
-        <OverlayText>{this.state.count}</OverlayText>
+        <OverlayText>{count}</OverlayText>
       </VideoContainer>
     );
   }
 
-  videoControls() {
+  const videoControls = () => {
     const primaryButtons = [
       {
         icon: "skip_previous", fn: () => {
-          this.previousSong();
+          previousSong();
           window.umami.trackEvent("Previous track", "nav");
         }, active: true
       },
       {
-        icon: this.state.paused ? "play_circle" : "pause_circle",
-        fn: this.state.paused ? this.handlePlayerPlay : this.handlePlayerPause,
+        icon: paused ? "play_circle" : "pause_circle",
+        fn: paused ? handlePlayerPlay : handlePlayerPause,
         active: true,
       },
       {
         icon: "skip_next", fn: () => {
-          this.skipSong();
+          skipSong();
           window.umami.trackEvent("Next track", "nav");
         }, active: true
       },
     ];
     const secondaryButtons = [
-      { icon: this.state.muted ? "volume_off" : "volume_up", fn: this.mute, active: this.state.muted },
-      { icon: "replay_10", fn: this.back10, active: true },
-      { icon: "forward_30", fn: this.forward30, active: true },
-      { icon: "shuffle", fn: this.shuffle, active: this.state.shuffled },
+      { icon: muted ? "volume_off" : "volume_up", fn: mute, active: muted },
+      { icon: "replay_10", fn: back10, active: true },
+      { icon: "forward_30", fn: forward30, active: true },
+      { icon: "shuffle", fn: shuffle, active: shuffled },
     ];
 
     const controls = (
@@ -254,16 +203,16 @@ class Playlist extends Component {
         </ButtonRow>
       </div>
     );
-    return this.state.ready ? controls : null;
+    return ready ? controls : null;
   }
 
-  endScreen() {
+  const endScreen = () => {
     window.umami.trackEvent("Finished", "general");
     return (
       <EndScreen>
         <h1>🎉 You survived! 🎉</h1>
         <div>
-          <ButtonPrimary onClick={this.replay}>Play Again</ButtonPrimary>
+          <ButtonPrimary onClick={replay}>Play Again</ButtonPrimary>
           <ButtonLink
             to="/"
             text="Home"
@@ -275,110 +224,129 @@ class Playlist extends Component {
     );
   }
 
-  onReady() {
-    this.setState({ ready: true });
-  }
-
-  nextTrack() {
-    this.setState(prev => ({ count: prev.count + 1, paused: false }), () => {
-      const count = this.state.count;
-      if (count <= 60 && this.state.ready) {
-        const sound = this.state.randomShotTimes.includes(count) ? this.shotsSound : this.sound;
-        sound.play();
-        this.timer.repeat();
-        this.skipSong();
-      }
-    });
-  }
-
-  handlePlayerPause() {
-    if (!this.state.paused) {
-      this.timer.pause();
-      this.setState({ paused: true });
+  function nextTrack() {
+    togglePaused(false);
+    setCount(count + 1);
+    if (count <= 60 && ready) {
+      (randomShotTimes.includes(count) ? shotsSound : drinkSound)();
+      restartTimer(getTimerTime());
+      skipSong();
     }
   }
 
-  handlePlayerPlay() {
-    if (this.state.paused) {
-      this.timer.resume()
-      if (this.state.justStarted) {
-        this.setState({ paused: false });
-        this.player.seekTo(this.state.autoSkip);
-        this.setState({ justStarted: false });
-      } else {
-        this.setState({ paused: false });
+  const handlePlayerPause = () => {
+    if (!paused) {
+      pauseTimer();
+      togglePaused(true);
+    }
+  }
+
+  const handlePlayerPlay = () => {
+    if (paused) {
+      resumeTimer();
+      togglePaused(false);
+      if (justStarted) {
+        player.current.seekTo(autoSkip);
+        toggleJustStarted(false);
       }
     }
   }
 
-  replay() {
-    this.setState({ count: 1, paused: true, muted: false, shuffled: false });
+  const replay = () => {
+    setCount(1);
+    togglePaused(true);
+    toggleMuted(false);
+    toggleShuffled(false);
   }
 
-  forward30() {
-    if (this.state.ready) {
-      this.player.seekTo(this.player.getCurrentTime() + 30);
+  const forward30 = () => {
+    if (ready) {
+      player.current.seekTo(player.current.getCurrentTime() + 30);
       window.umami.trackEvent("Forward 30", "nav");
     }
   }
 
-  back10() {
-    if (this.state.ready) {
-      this.player.seekTo(this.player.getCurrentTime() - 10);
+  const back10 = () => {
+    if (ready) {
+      player.current.seekTo(player.current.getCurrentTime() - 10);
       window.umami.trackEvent("Back 10", "nav");
     }
   }
 
-  skipSong() {
-    if (this.state.ready)
-      this.player.getInternalPlayer().nextVideo();
+  const skipSong = () => {
+    if (ready)
+      player.current.getInternalPlayer().nextVideo();
   }
 
-  previousSong() {
-    if (this.state.ready)
-      this.player.getInternalPlayer().previousVideo();
+  const previousSong = () => {
+    if (ready)
+      player.current.getInternalPlayer().previousVideo();
   }
 
-  autoSkip() {
-    this.setState({ justStarted: true });
-  }
-
-  shuffle() {
-    if (this.state.ready) {
-      this.player.getInternalPlayer().setShuffle(!this.state.shuffled);
-      this.setState(prev => ({ shuffled: !prev.shuffled }));
+  const shuffle = () => {
+    if (ready) {
+      toggleShuffled(!shuffled);
+      // useEffect to handle player shuffling
       window.umami.trackEvent("Toggle shuffle", "nav");
     }
   }
 
-  mute() {
-    if (!this.state.ready)
+  useEffect(() => {
+    let p = player.current.getInternalPlayer();
+    if (ready)
+      p.setShuffle(shuffled);
+  }, [shuffled, ready])
+
+  const mute = () => {
+    if (!ready)
       return;
-    this.setState(prev => ({ muted: !prev.muted }), () => {
-      const p = this.player.getInternalPlayer();
-      this.state.muted ? p.mute() : p.unMute();
-    });
+    toggleMuted(!muted);
+    // useEffect to handle player muting
     window.umami.trackEvent("Toggle mute", "nav");
   }
 
-  setRandomShots(n) {
+  useEffect(() => {
+    let p = player.current.getInternalPlayer();
+    if (ready)
+      muted ? p.mute() : p.unMute();
+  }, [muted, ready]);
+
+  const setRandomShots = n => {
     const times = [];
     while (times.length < n) {
       times.push(Math.floor(Math.random() * 58 + 2));
     }
-    this.setState({ randomShotTimes: times });
+    setRandomShotTimes(times);
     // window.umami.trackEvent("Random shots", "nav");
   }
 
-  setTrackNumber(n) {
-    this.setState({ count: n });
-    // window.umami.trackEvent("Skip to", "nav");
-  }
+  return (
+    <>
+      <DrinkPage
+        bgImage={process.env.PUBLIC_URL + bgImage}
+        path={props.path}
+        id="player-content"
+      >
+        <Nav>
+          <Sidenav
+            autoSkipSlider={setAutoSkip}
+            count={count}
+            shotsSlider={setRandomShots}
+            numberSlider={setCount}
+            numShotsCompleted={numShotsCompleted}
+          >
+            {isDone ? null : videoControls()}
+          </Sidenav>
+          <PlaylistName>{props.name ?? "Our Power Hour"}</PlaylistName>
+          <Link to="/">
+            <Home active={"true"} className="material-icons gradient" >home</Home>
+          </Link>
+        </Nav>
+        {isDone ? endScreen() : videoPlayer()}
+      </DrinkPage >
+    </>
+  );
 
-  setAutoSkip(n) {
-    this.setState({ autoSkip: n });
-    // window.umami.trackEvent("Auto skip", "nav");
-  }
 }
 
 export default Playlist;
