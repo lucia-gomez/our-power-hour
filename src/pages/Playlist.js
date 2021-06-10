@@ -115,9 +115,7 @@ const Playlist = ({
   const [randomShotTimes, setRandomShotTimes] = useState([]);
   const [ready, toggleReady] = useState(false);
 
-  var mp3 = require('../sounds/' + sound);
-
-  const [drinkSound] = useSound(mp3.default);
+  const [drinkSound] = useSound(require('../sounds/' + sound + '.mp3').default);
   const [shotsSound] = useSound(ShotsSound);
 
   const isDone = count > 60;

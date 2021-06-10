@@ -5,7 +5,7 @@ import ScrollableGrid from '../styles/ScrollableGrid';
 import ButtonPrimary from '../styles/ButtonPrimary';
 import ButtonLink from '../components/ButtonLink';
 import Button from '../styles/Button';
-import UIfx from 'uifx';
+import useSound from 'use-sound';
 
 const flexibleBtn = css`
 margin: 10px 3px;
@@ -24,41 +24,41 @@ const ButtonFlexible = styled(Button)`
   ${flexibleBtn}
 `;
 
+const spriteJson = require('../scripts/sounds.json');
+
 const ChooseSound = (props) => {
+  const mp3 = require("../scripts/result.mp3").default;
+  const [playSound] = useSound(mp3, {
+    sprite: spriteJson.sprite
+  });
+
   let sounds = [
-    { label: "Buzzer", filename: "buzzer.mp3" },
-    { label: "Ding", filename: "ding.mp3" },
-    { label: "Quack", filename: "quack.mp3" },
-    { label: "Titty Sprinkles", filename: "titty-sprinkles.mp3" },
-    { label: "Drank", filename: "drank.mp3" },
-    { label: "Airhorn", filename: "airhorn.mp3" },
-    { label: "Windows", filename: "windows.mp3" },
-    { label: "Circle", filename: "circle.mp3" },
-    { label: "Frog", filename: "frog.mp3" },
-    { label: "Oh Yeah", filename: "oh-yeah.mp3" },
-    { label: "Power Up", filename: "power-up.mp3" },
-    { label: "Super Mario", filename: "super-mario.mp3" },
-    { label: "Taco Bell", filename: "taco-bell.mp3" },
-    { label: "Waluigi", filename: "waluigi.mp3" },
-    { label: "Yeet", filename: "yeet.mp3" },
-    { label: "You What?", filename: "you-what.mp3" },
-    { label: "Toad", filename: "toad.mp3" },
-    { label: "Law & Order", filename: "law-and-order.mp3" },
-    { label: "Ka-ching", filename: "ka-ching.mp3" },
-    { label: "Diagonally", filename: "diagonally.mp3" },
+    { label: "Buzzer", id: "buzzer" },
+    { label: "Ding", id: "ding" },
+    { label: "Quack", id: "quack" },
+    { label: "Titty Sprinkles", id: "titty-sprinkles" },
+    { label: "Drank", id: "drank" },
+    { label: "Airhorn", id: "airhorn" },
+    { label: "Windows", id: "windows" },
+    { label: "Circle", id: "circle" },
+    { label: "Frog", id: "frog" },
+    { label: "Oh Yeah", id: "oh-yeah" },
+    { label: "Power Up", id: "power-up" },
+    { label: "Super Mario", id: "super-mario" },
+    { label: "Taco Bell", id: "taco-bell" },
+    { label: "Waluigi", id: "waluigi" },
+    { label: "Yeet", id: "yeet" },
+    { label: "You What?", id: "you-what" },
+    { label: "Toad", id: "toad" },
+    { label: "Law & Order", id: "law-and-order" },
+    { label: "Ka-ching", id: "ka-ching" },
+    { label: "Diagonally", id: "diagonally" },
   ];
   sounds = sounds.sort((a, b) => a.label.localeCompare(b.label));
 
   const [active, setActive] = useState(null);
   const onClick = (sound, idx) => {
-    var mp3 = require('../sounds/' + sound);
-    new UIfx(
-      mp3.default,
-      {
-        volume: 1.0,
-        throttleMs: 0,
-      }
-    ).play();
+    playSound({ id: sound });
     localStorage.setItem("powerHourSound", sound);
     props.setSound(sound);
     setActive(idx);
@@ -66,7 +66,7 @@ const ChooseSound = (props) => {
   };
 
   const chooseRandom = () => {
-    const sound = sounds[Math.floor(Math.random() * sounds.length)].filename;
+    const sound = sounds[Math.floor(Math.random() * sounds.length)].id;
     localStorage.setItem("powerHourSound", sound);
     props.setSound(sound);
     setActive(-1);
@@ -91,7 +91,7 @@ const ChooseSound = (props) => {
       <ScrollableGrid>
         {getButton(-1, '???', chooseRandom)}
         {sounds.map((sound, idx) => {
-          const click = () => onClick(sound.filename, idx);
+          const click = () => onClick(sound.id, idx);
           return getButton(idx, sound.label, click);
         })}
       </ScrollableGrid>

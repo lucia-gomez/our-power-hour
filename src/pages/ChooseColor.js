@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PageTemplate from './PageTemplate';
 import ScrollableGrid from '../styles/ScrollableGrid';
 import ButtonLink from '../components/ButtonLink';
-import themes from '../styles/themes';
+import themes from '../scripts/themes';
 
 const CIRCLE_SIZE = 90;
 

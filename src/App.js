@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Router, Location } from "@reach/router";
 
-import { setColors } from './gradient.js';
-import themes from './styles/themes';
+import { setColors } from './scripts/gradient.js';
+import themes from './scripts/themes';
 
 import Home from './pages/Home';
 import ChoosePlaylist from './pages/ChoosePlaylist';
