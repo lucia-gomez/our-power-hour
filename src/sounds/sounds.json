@@ -1,6 +1,6 @@
 {
   "urls": [
-    "result.mp3"
+    "../sounds/result.mp3"
   ],
   "sprite": {
     "airhorn": [

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Page from '../styles/Page';
 import Header from '../styles/Header';
@@ -121,6 +121,13 @@ const Playlist = ({
   const isDone = count > 60;
   const bgImage = isDone ? '/confetti.gif' : null;
   const numShotsCompleted = randomShotTimes.filter(x => x <= count).length;
+
+  useEffect(() => {
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      alert("To enable sound effects, turn off silent mode on your device")
+    }
+  }, [])
 
   const videoPlayer = (
     <VideoContainer>
