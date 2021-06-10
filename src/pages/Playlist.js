@@ -115,8 +115,8 @@ const Playlist = ({
   const [randomShotTimes, setRandomShotTimes] = useState([]);
   const [ready, toggleReady] = useState(false);
 
-  const [drinkSound] = useSound(require('../sounds/' + sound + '.mp3').default);
-  const [shotsSound] = useSound(ShotsSound);
+  const [drinkSound] = useSound(require('../sounds/' + sound + '.mp3').default, { html5: true });
+  const [shotsSound] = useSound(ShotsSound, { html5: true });
 
   const isDone = count > 60;
   const bgImage = isDone ? '/confetti.gif' : null;
@@ -173,9 +173,9 @@ const Playlist = ({
 
   function nextTrack() {
     togglePaused(false);
+    (randomShotTimes.includes(count + 1) ? shotsSound : drinkSound)();
     setCount(count + 1);
     if (count <= 60 && ready) {
-      (randomShotTimes.includes(count) ? shotsSound : drinkSound)();
       restartTimer(getTimerTime());
       skipSong();
     }
