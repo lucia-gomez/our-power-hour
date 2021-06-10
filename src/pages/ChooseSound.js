@@ -24,11 +24,11 @@ const ButtonFlexible = styled(Button)`
   ${flexibleBtn}
 `;
 
-const spriteJson = require('../scripts/sounds.json');
+const spriteJson = require('../sounds/sounds.json');
 
 const ChooseSound = (props) => {
-  const mp3 = require("../scripts/result.mp3").default;
-  const [playSound] = useSound(mp3, {
+  const mp3 = require("../sounds/result.mp3").default;
+  const [playSound, { stop: stopSound }] = useSound(mp3, {
     sprite: spriteJson.sprite
   });
 
@@ -58,6 +58,7 @@ const ChooseSound = (props) => {
 
   const [active, setActive] = useState(null);
   const onClick = (sound, idx) => {
+    stopSound();
     playSound({ id: sound });
     localStorage.setItem("powerHourSound", sound);
     props.setSound(sound);
