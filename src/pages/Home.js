@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../styles/Header';
 import Page from '../styles/Page';
 import ButtonLink from '../components/ButtonLink';
+import Table from '../components/Table';
+import $ from 'jquery';
 
 const HomePage = styled(Page)`
   background-image: url(${props => props.bgImage});
@@ -20,6 +23,17 @@ const HomePage = styled(Page)`
 `;
 
 const Home = (props) => {
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    $.ajax({
+      url: "http://localhost:3001/api",
+      type: "get",
+      success: data => {
+        setRows(data)
+      },
+    });
+  }, [])
+
   const bgImage = process.env.PUBLIC_URL + '/bottles.png';
   return (
     <HomePage path={props.path} bgImage={bgImage}>
@@ -27,8 +41,10 @@ const Home = (props) => {
         <Header>Our Power Hour</Header>
         <p>Use any YouTube playlist for a customized Power Hour experience</p>
       </div>
-      <br />
       <ButtonLink to="/1" text="Get started" enabled={"true"} />
+      <h3>OR</h3>
+      <p>Play one of these Power Hours:</p>
+      <Table rows={rows} handleSelect={props.useDatabasePowerHour} />
     </HomePage>
   );
 };

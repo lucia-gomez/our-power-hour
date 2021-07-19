@@ -34,6 +34,13 @@ function App() {
   const [sound, setSound] = useState(localStorage.getItem("powerHourSound"));
   const [name, setName] = useState(null);
 
+  const useDatabasePowerHour = row => {
+    setPlaylistID(row.playlist_id);
+    setSound(row.sound);
+    setName(row.name);
+    setThemeName(row.theme);
+  }
+
   return (
     <div className="App" >
       <ThemeProvider theme={theme}>
@@ -45,7 +52,7 @@ function App() {
             return (
               <>
                 <Router>
-                  <Home path="/" />
+                  <Home path="/" {...{ useDatabasePowerHour }} />
                   <ChoosePlaylist path="/1" setPlaylistID={setPlaylistID} />
                   <ChooseSound path="/2" setSound={setSound} />
                   <ChooseName path="/3" setName={setName} />
