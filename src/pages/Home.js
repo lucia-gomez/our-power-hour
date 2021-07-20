@@ -22,6 +22,14 @@ const HomePage = styled(Page)`
   }
 `;
 
+const Content = styled.div`
+  transform: translateY(25%);
+`;
+
+const Description = styled.p`
+  max-width: 500px;
+`;
+
 const Home = (props) => {
   const [rows, setRows] = useState([]);
   useEffect(() => {
@@ -37,14 +45,17 @@ const Home = (props) => {
   const bgImage = process.env.PUBLIC_URL + '/bottles.png';
   return (
     <HomePage path={props.path} bgImage={bgImage}>
-      <div>
+      <Content>
         <Header>Our Power Hour</Header>
-        <p>Use any YouTube playlist for a customized Power Hour experience</p>
-      </div>
-      <ButtonLink to="/1" text="Get started" enabled={"true"} />
-      <h3>OR</h3>
-      <p>Play one of these Power Hours:</p>
-      <Table rows={rows} handleSelect={props.useDatabasePowerHour} />
+        <Description>Create a customized Power Hour experience from any YouTube playlist</Description>
+        <br />
+        <br />
+        <ButtonLink to="/1" text="Get started" enabled={"true"} />
+      </Content>
+      {/* <br />
+      <br />
+      <p>See what other people are playing</p>
+      <Table rows={rows} handleSelect={props.useDatabasePowerHour} /> */}
     </HomePage>
   );
 };
