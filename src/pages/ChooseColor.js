@@ -64,7 +64,7 @@ const ChooseColor = (props) => {
       </ScrollableGrid>
       <ButtonLink
         enabled={"true"}
-        to="/drink"
+        to="/4"
         text="Next"
       />
     </PageTemplate >

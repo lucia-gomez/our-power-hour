@@ -32,7 +32,7 @@ app.get("/api", (req, res) => {
   db.query(sql, (err, result) => {
     res.send(result);
   });
-})
+});
 
 
 app.post("/api", (req, res) => {
@@ -45,6 +45,14 @@ app.post("/api", (req, res) => {
   const sql = "INSERT INTO power_hours (playlist_id, playlist_name, sound, name, theme) VALUES (?, ?, ?, ?, ?);";
   db.query(sql, [playlist_id, playlist_name, sound, name, theme], (err, result) => {
     if (err) console.error(err);
+    res.send(result);
+  });
+});
+
+app.delete("/api/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM power_hours WHERE id = ?;"
+  db.query(sql, id, (err, result) => {
     res.send(result);
   });
 });

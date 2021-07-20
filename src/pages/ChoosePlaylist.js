@@ -45,6 +45,7 @@ const ChoosePlaylist = (props) => {
           setURL(id);
           localStorage.setItem("powerHourPlaylistID", id);
           props.setPlaylistID(id);
+          props.setPlaylistName(snippet.title);
         } else {
           onError("")
         }
