@@ -5,8 +5,6 @@ import Header from '../styles/Header';
 import VideoContainer from '../styles/Video';
 import ReactPlayer from 'react-player/youtube';
 import Sidenav from '../components/Sidenav';
-import { Link } from '@reach/router';
-import { ButtonIconStyle } from '../components/ButtonIcon';
 import PlayerControls from './PlayerControls';
 
 import { useTimer } from 'react-timer-hook';
@@ -15,8 +13,10 @@ import ShotsSound from '../sounds/shots.mp3';
 
 import ButtonPrimary from '../styles/ButtonPrimary';
 import ButtonLink from '../components/ButtonLink';
+import HomeButton from '../components/HomeButton';
 
 const DrinkPage = styled(Page)`
+  align-items: unset;
   display: grid;
   grid-template-rows: 8vh 1fr;
   background-image: url(${props => props.bgImage}); 
@@ -66,13 +66,6 @@ const OverlayText = styled.h3.attrs(_ => ({
   @media only screen and (max-height: 812px) {
     font-size: 40px;
   }
-`;
-
-const Home = styled(ButtonIconStyle)`
-  font-size: 5vh;
-  position: absolute;
-  right: 10px;
-  top: 10px;
 `;
 
 const EndScreen = styled.div`
@@ -249,9 +242,7 @@ const Playlist = ({
           }
         </Sidenav>
         <PlaylistName>{name ?? "Our Power Hour"}</PlaylistName>
-        <Link to="/">
-          <Home active={"true"} className="material-icons gradient" >home</Home>
-        </Link>
+        <HomeButton />
       </Nav>
       {isDone ? endScreen() : videoPlayer}
     </DrinkPage >
