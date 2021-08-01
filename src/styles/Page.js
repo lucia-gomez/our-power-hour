@@ -7,6 +7,9 @@ const Page = styled.div`
   height: 100vh;
   padding: 0px 10px;
   transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default Page;

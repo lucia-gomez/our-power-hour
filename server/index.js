@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/api", (req, res) => {
-  const sql = "SELECT * FROM power_hours ORDER BY RAND() LIMIT 5;"
+  const sql = "SELECT * FROM power_hours ORDER BY RAND() LIMIT 10;"
   db.query(sql, (err, result) => {
     res.send(result);
   });
@@ -42,11 +42,13 @@ app.post("/api", (req, res) => {
   const name = req.body.name;
   const theme = req.body.theme;
 
-  const sql = "INSERT INTO power_hours (playlist_id, playlist_name, sound, name, theme) VALUES (?, ?, ?, ?, ?);";
-  db.query(sql, [playlist_id, playlist_name, sound, name, theme], (err, result) => {
-    if (err) console.error(err);
-    res.send(result);
-  });
+  if (playlist_name !== "") {
+    const sql = "INSERT INTO power_hours (playlist_id, playlist_name, sound, name, theme) VALUES (?, ?, ?, ?, ?);";
+    db.query(sql, [playlist_id, playlist_name, sound, name, theme], (err, result) => {
+      if (err) console.error(err);
+      res.send(result);
+    });
+  }
 });
 
 app.delete("/api/:id", (req, res) => {

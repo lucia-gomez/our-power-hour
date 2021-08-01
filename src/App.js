@@ -12,6 +12,7 @@ import ChoosePlaylist from './pages/ChoosePlaylist';
 import ChooseSound from './pages/ChooseSound';
 import ChooseName from './pages/ChooseName';
 import ChooseColor from './pages/ChooseColor';
+import ChoosePremade from './pages/ChoosePremade';
 import Playlist from './pages/Playlist';
 import Progress from './components/Progress';
 
@@ -76,6 +77,7 @@ function App() {
                   <ChooseSound path="/2" setSound={setSound} />
                   <ChooseColor path="/3" setTheme={setThemeName} />
                   <ChooseName path="/4" {...{ setName, sharePowerHour }} />
+                  <ChoosePremade path="/browse" {...{ useDatabasePowerHour }} theme={themes[themeName]} />
                   <Playlist
                     path="/drink"
                     playlistID={playlistID}

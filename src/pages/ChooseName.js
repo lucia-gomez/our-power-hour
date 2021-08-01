@@ -16,6 +16,11 @@ const ChooseName = (props) => {
     }
   }
 
+  const handleChange = e => {
+    setValue(e.target.value);
+    props.setName(e.target.value);
+  }
+
   return (
     <PageTemplate
       title={"Step " + stepNum}
@@ -24,7 +29,7 @@ const ChooseName = (props) => {
       path={props.path}
       step={stepNum}
     >
-      <Input onChange={x => setValue(x.target.value)} placeholder="Our Power Hour" />
+      <Input onChange={handleChange} placeholder="Our Power Hour" />
       <label>
         <input
           type="checkbox"
