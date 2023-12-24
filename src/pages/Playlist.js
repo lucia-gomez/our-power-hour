@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { ButtonIconStyle } from "../components/ButtonIcon";
 import ButtonLink from "../components/ButtonLink";
 import ButtonPrimary from "../styles/ButtonPrimary";
+import Context from "../components/Context";
 import Header from "../styles/Header";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import Page from "../styles/Page";
 import PlayerControls from "./PlayerControls";
 import ReactPlayer from "react-player/youtube";
-import ShotsSound from "../sounds/shots.mp3";
 import Sidenav from "../components/Sidenav";
 import VideoContainer from "../styles/Video";
+import initializeHowler from "../scripts/initializeHowler";
 import styled from "styled-components";
-import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
 
 const DrinkPage = styled(Page)`
@@ -85,32 +85,43 @@ const EndScreen = styled.div`
 	}
 `;
 
-const TIMER_SEC = 5;
+const TIMER_SEC = 60;
 const getTimerTime = () => {
 	let time = new Date();
 	time.setSeconds(time.getSeconds() + TIMER_SEC);
 	return time;
 };
 
-const Playlist = ({ playlistID, sound, name, path }) => {
+const Playlist = ({ path }) => {
+	const { howler, setHowler, playlistID, sound, name } = useContext(Context);
 	const player = useRef(null);
+
+	useEffect(() => {
+		if (howler == null) {
+			setHowler(initializeHowler());
+		}
+	}, [howler, setHowler]);
 
 	const {
 		pause: pauseTimer,
 		resume: resumeTimer,
 		restart: restartTimer,
-	} = useTimer({ expiryTimestamp: getTimerTime(), onExpire: nextTrack });
+	} = useTimer({
+		autoStart: false,
+		expiryTimestamp: getTimerTime(),
+		onExpire: nextTrack,
+	});
 
 	const [autoSkip, setAutoSkip] = useState(0);
 	const [count, setCount] = useState(1);
-	const [justStarted, toggleJustStarted] = useState(false);
+	const [justStarted, toggleJustStarted] = useState(true);
 
 	const [paused, togglePaused] = useState(true);
 	const [randomShotTimes, setRandomShotTimes] = useState([]);
 	const [ready, toggleReady] = useState(false);
 
-	const [drinkSound] = useSound(require("../sounds/" + sound + ".mp3").default);
-	const [shotsSound] = useSound(ShotsSound);
+	const drinkSound = () => howler.play(sound);
+	const shotsSound = () => howler.play("shots");
 
 	const isDone = count > 60;
 	const bgImage = isDone ? "/confetti.gif" : null;
@@ -169,12 +180,12 @@ const Playlist = ({ playlistID, sound, name, path }) => {
 
 	function nextTrack() {
 		togglePaused(false);
-		setCount(count + 1);
 		if (count < 60 && ready) {
-			(randomShotTimes.includes(count) ? shotsSound : drinkSound)();
+			(randomShotTimes.includes(count + 1) ? shotsSound : drinkSound)();
 			restartTimer(getTimerTime());
 			skipSong();
 		}
+		setCount(count + 1);
 	}
 
 	function handlePlayerPause() {
@@ -190,6 +201,7 @@ const Playlist = ({ playlistID, sound, name, path }) => {
 			togglePaused(false);
 			if (justStarted) {
 				player.current.seekTo(autoSkip);
+				player.current.getInternalPlayer().playVideo();
 				toggleJustStarted(false);
 			}
 		}
