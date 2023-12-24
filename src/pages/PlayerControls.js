@@ -20,6 +20,7 @@ const PlayerControls = ({
 	handlePlayerPause,
 	paused,
 }) => {
+	// will reset these to false each time component mounts
 	const [muted, toggleMuted] = useState(false);
 	const [shuffled, toggleShuffled] = useState(false);
 
@@ -32,7 +33,7 @@ const PlayerControls = ({
 
 	useEffect(() => {
 		let p = player.current.getInternalPlayer();
-		if (ready) p.setShuffle(shuffled);
+		if (ready && p != null) p.setShuffle(shuffled);
 	}, [shuffled, ready, player]);
 
 	const mute = () => {
@@ -43,7 +44,7 @@ const PlayerControls = ({
 
 	useEffect(() => {
 		let p = player.current.getInternalPlayer();
-		if (ready) muted ? p.mute() : p.unMute();
+		if (ready && p != null) muted ? p.mute() : p.unMute();
 	}, [muted, ready, player]);
 
 	const forward30 = () => {

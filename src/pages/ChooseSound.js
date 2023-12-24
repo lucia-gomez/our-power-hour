@@ -1,12 +1,13 @@
 import styled, { css } from "styled-components";
+import { useContext, useEffect, useState } from "react";
 
 import Button from "../styles/Button";
 import ButtonLink from "../components/ButtonLink";
 import ButtonPrimary from "../styles/ButtonPrimary";
+import Context from "../components/Context";
 import PageTemplate from "./PageTemplate";
 import ScrollableGrid from "../styles/ScrollableGrid";
-import useSound from "use-sound";
-import { useState } from "react";
+import initializeHowler from "../scripts/initializeHowler";
 
 const flexibleBtn = css`
 	margin: 10px 3px;
@@ -25,13 +26,14 @@ const ButtonFlexible = styled(Button)`
 	${flexibleBtn}
 `;
 
-const spriteJson = require("../sounds/sounds.json");
-
 const ChooseSound = (props) => {
-	const mp3 = require("../sounds/result.mp3").default;
-	const [playSound, { stop: stopSound }] = useSound(mp3, {
-		sprite: spriteJson.sprite,
-	});
+	const { howler, setHowler, setSound } = useContext(Context);
+	useEffect(() => {
+		if (howler == null) {
+			const howler = initializeHowler();
+			setHowler(howler);
+		}
+	}, [howler, setHowler]);
 
 	let sounds = [
 		{ label: "Buzzer", id: "buzzer" },
@@ -59,10 +61,10 @@ const ChooseSound = (props) => {
 
 	const [active, setActive] = useState(null);
 	const onClick = (sound, idx) => {
-		stopSound();
-		playSound({ id: sound });
+		howler.stop();
+		howler.play(sound);
 		localStorage.setItem("powerHourSound", sound);
-		props.setSound(sound);
+		setSound(sound);
 		setActive(idx);
 		window.gtag("event", "sound", {
 			sound,
@@ -72,7 +74,7 @@ const ChooseSound = (props) => {
 	const chooseRandom = () => {
 		const sound = sounds[Math.floor(Math.random() * sounds.length)].id;
 		localStorage.setItem("powerHourSound", sound);
-		props.setSound(sound);
+		setSound(sound);
 		setActive(-1);
 	};
 
@@ -88,15 +90,11 @@ const ChooseSound = (props) => {
 		);
 	};
 
-	const stepNum = Number(props.path.substring(1));
-
 	return (
 		<PageTemplate
-			title={"Step " + stepNum}
 			caption="Choose a timer sound effect"
 			helpText="You'll drink when you hear this sound"
 			path={props.path}
-			step={stepNum}
 		>
 			<ScrollableGrid>
 				{getButton(-1, "???", chooseRandom)}
@@ -106,7 +104,7 @@ const ChooseSound = (props) => {
 				})}
 			</ScrollableGrid>
 			<ButtonLink
-				to={"/" + (stepNum + 1)}
+				to={"/3"}
 				text="Next"
 				enabled={active !== null ? 1 : 0}
 				errorMsg="Click on one of the above sounds"

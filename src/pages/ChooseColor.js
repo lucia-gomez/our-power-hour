@@ -47,15 +47,8 @@ const ChooseColor = (props) => {
 		);
 	};
 
-	const stepNum = Number(props.path.substring(1));
-
 	return (
-		<PageTemplate
-			title={"Step " + stepNum}
-			caption="Choose a color scheme (optional)"
-			path={props.path}
-			step={stepNum}
-		>
+		<PageTemplate caption="Choose a color scheme (optional)" path={props.path}>
 			<p>{selected.replaceAll("-", " ")}</p>
 			<ScrollableGrid>
 				{Object.entries(themes).map((theme, i) => (
